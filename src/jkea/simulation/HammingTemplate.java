@@ -8,10 +8,18 @@ public class HammingTemplate {
 	private double cNorm;
 	
 	public HammingTemplate(double variance) {
-		adjust_variance(variance);
+		adjustVariance(variance);
 	}
 	
-	private void adjust_variance(double variance) {
+	public double getStdDeviation() {
+		return stdDeviation;
+	}
+
+	public double getcNorm() {
+		return cNorm;
+	}
+
+	private void adjustVariance(double variance) {
 		stdDeviation = Math.sqrt(variance);
 		cNorm = 1. / Math.sqrt(2 * Math.PI * variance);
 	}
