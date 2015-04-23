@@ -42,4 +42,14 @@ public class AESCipher {
 		}
 		return block;
 	}
+
+	public short predict(short plain, short key) {
+		if ((plain < 0) || (plain > 255)) {
+			throw new IllegalArgumentException("Plain must be an unsigned char");
+		}
+		if ((key < 0) || (key > 255)) {
+			throw new IllegalArgumentException("Key must be an unsigned char");
+		}
+		return sBox[plain ^ key];
+	}
 }
