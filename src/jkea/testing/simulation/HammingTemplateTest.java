@@ -21,7 +21,7 @@ public class HammingTemplateTest {
 				2.64575, 2.82843, 3 };
 		double cNormSolutions[] = { 0.398942, 0.282095, 0.230329, 0.199471,
 				0.178412, 0.162868, 0.150786, 0.141047, 0.132981 };
-		for (int i = 1; i < 10; ++i) {
+		for (int i = 1; i < 10; i++) {
 			HammingTemplate newClass = new HammingTemplate(i);
 			assertEquals(stdDevSolutions[i - 1], newClass.getStdDeviation(),
 					1e-5);
@@ -64,14 +64,22 @@ public class HammingTemplateTest {
 			}
 		}
 	}
+	
+	public void leakTest() {
+		double solutions[] = { 2.41421, 4.41421, 7.41421, 5.41421,  6.41421 }; 
+		short inputs[] = { 1, 100, 125, 57, 227 };
+		for(int i = 0; i < 5; i++) {
+			assertEquals(solutions[i], testClass.leak(inputs[i]), 1 + 1e-5);
+		}
+	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void vairanceOutOfRangeTest() {
+	public void vairanceLower() {
 		new HammingTemplate(0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void vairanceOutOfRangeTestTwo() {
+	public void varianceLowerTwo() {
 		new HammingTemplate(-1);
 	}
 
@@ -83,5 +91,35 @@ public class HammingTemplateTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void hammingWeightBoundsUpper() {
 		testClass.hammingWeight((short) 256);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void leakBoundsLower() {
+		testClass.leak((short) -1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void leakBoundsUpper() {
+		testClass.leak((short) 256);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void leakDensityBoundsLower() {
+		testClass.leakDensity(-0.5, (short)128);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void leakDenstiyBoundsUpper() {
+		testClass.leakDensity(1.5, (short)128);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void leakDensityBoundsLowerTwo() {
+		testClass.leakDensity(0.5, (short)-1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void leakDenstiyBoundsUpperTwo() {
+		testClass.leakDensity(0.5, (short)256);
 	}
 }
