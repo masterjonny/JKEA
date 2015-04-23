@@ -63,7 +63,7 @@ class AESCipher {
 		}
 
 		short prediction[] = new short[0x10];
-		for(int i = 0; i < 0x10; i++) {
+		for (int i = 0; i < 0x10; i++) {
 			prediction[i] = predict(plain[i], key[i]);
 		}
 		return prediction;

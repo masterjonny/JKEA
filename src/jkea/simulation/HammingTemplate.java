@@ -45,9 +45,8 @@ class HammingTemplate {
 			throw new IllegalArgumentException(
 					"Transition must be an unsigned char");
 		}
-		if ((leak < 0) || (leak > 1)) {
-			throw new IllegalArgumentException(
-					"Leak must be in the range 0 - 1");
+		if (leak < 0) {
+			throw new IllegalArgumentException("Leak must be positive");
 		}
 		double x = (leak - hammingWeight(transition) / stdDeviation);
 		return Math.exp(-x * x / 2) * cNorm;

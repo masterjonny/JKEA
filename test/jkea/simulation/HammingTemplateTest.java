@@ -109,11 +109,6 @@ public class HammingTemplateTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void leakDenstiyBoundsUpper() {
-		testClass.leakDensity(1.5, (short)128);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
 	public void leakDensityBoundsLowerTwo() {
 		testClass.leakDensity(0.5, (short)-1);
 	}

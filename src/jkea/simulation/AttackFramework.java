@@ -1,5 +1,10 @@
 package jkea.simulation;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 
 class AttackFramework {
@@ -50,7 +55,31 @@ class AttackFramework {
 	}
 
 	void writeToFile(String fileName) {
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(fileName)))) {
+			writer.write("[");
+			for (int i = 0; i < 0x10; i++) {
+				writer.write(Integer.toHexString(key[i] & 0xffff));
+				if (i != 0x10 - 1)
+					writer.write(",");
+			}
+			writer.write("]");
+			writer.write(System.getProperty("line.separator"));
+			for (int i = 0; i < 0x10; i++) {
+				writer.write("[");
+				for (int j = 0; j < 0x100; j++) {
+					writer.write(Double.toString(prior[i][j]));
+					if (j != 0x100 - 1)
+						writer.write(",");
+				}
+				writer.write("]");
+				writer.write(System.getProperty("line.separator"));
+			}
 
+		} catch (IOException ex) {
+			throw new IllegalArgumentException(
+					"Filename provided cannot be opened for writing!");
+		}
 	}
 
 	public short[] getKey() {
