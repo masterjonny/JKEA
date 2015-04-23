@@ -4,13 +4,17 @@ import java.util.ArrayList;
 
 class AESDevice {
 
-	final ArrayList<HammingTemplate> templates;
-	final AESCipher cipher = new AESCipher();
+	private final ArrayList<HammingTemplate> templates;
+	private final AESCipher cipher = new AESCipher();
 
-	short[] key;
-	short[] plain;
+	private short[] key;
+	private short[] plain;
 
 	AESDevice(final ArrayList<HammingTemplate> templates) {
+		if (templates.size() != 0x10) {
+			throw new IllegalArgumentException(
+					"Hamming template size must be 16");
+		}
 		this.templates = templates;
 		newKey();
 		newPlain();
@@ -31,11 +35,11 @@ class AESDevice {
 	void newPlain() {
 		plain = cipher.newBlock();
 	}
-	
+
 	final double[] getTrace() {
 		short[] output = cipher.predict(plain, key);
 		double[] leakage = new double[0x10];
-		for(int i = 0; i < 0x10; i++) {
+		for (int i = 0; i < 0x10; i++) {
 			leakage[i] = templates.get(i).leak(output[i]);
 		}
 		return leakage;
