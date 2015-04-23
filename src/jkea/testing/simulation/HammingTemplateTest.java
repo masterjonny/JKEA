@@ -48,4 +48,40 @@ public class HammingTemplateTest {
 			assertEquals(solutions[i], testClass.hammingWeight(i));
 		}
 	}
+
+	public void leakDensityTest() {
+		double solutions[] = { 0.282095, 0.0297326, 0.0297326, 0.00516675,
+				0.0297326, 3.48133e-05, 0.277721, 0.0425899, 0.0425899,
+				0.00838646, 0.0425899, 7.25571e-05, 0.265004, 0.0591303,
+				0.0591303, 0.0131937, 0.0591303, 0.000146569, 0.245088,
+				0.0795685, 0.0795685, 0.0201181, 0.0795685, 0.000286969,
+				0.219696, 0.103777, 0.103777, 0.0297326, 0.103777, 0.000544571 };
+		int count = 0;
+		for (double i = 0; i <= 1; i += 0.25) {
+			for(short j = 0; j < 256; j += 25) {
+				count ++;
+				assertEquals(solutions[count], testClass.leakDensity(i, j), 1e-5);
+			}
+		}
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void vairanceOutOfRangeTest() {
+		new HammingTemplate(0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void vairanceOutOfRangeTestTwo() {
+		new HammingTemplate(-1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void hammingWeightBoundsLower() {
+		testClass.hammingWeight((short) -1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void hammingWeightBoundsUpper() {
+		testClass.hammingWeight((short) 256);
+	}
 }

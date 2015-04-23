@@ -9,6 +9,9 @@ public class HammingTemplate {
 	private double cNorm;
 
 	public HammingTemplate(double variance) {
+		if (variance <= 0) {
+			throw new IllegalArgumentException("Variance must be positive");
+		}
 		adjustVariance(variance);
 	}
 
@@ -23,6 +26,11 @@ public class HammingTemplate {
 	private void adjustVariance(double variance) {
 		stdDeviation = Math.sqrt(variance);
 		cNorm = 1. / Math.sqrt(2 * Math.PI * variance);
+	}
+	
+	public double leakDensity(double leak, short transition) {
+		double x = (leak - hammingWeight(transition) / stdDeviation);
+		return Math.exp(-x * x / 2) * cNorm;
 	}
 
 	public short hammingWeight(short transition) {
