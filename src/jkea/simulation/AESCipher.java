@@ -1,5 +1,7 @@
 package jkea.simulation;
 
+import java.util.Random;
+
 public class AESCipher {
 
 	private short sBox[] = { 0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
@@ -27,4 +29,17 @@ public class AESCipher {
 			0xdf, 0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99,
 			0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16 };
 
+	private Random numberStream;
+
+	public AESCipher() {
+		numberStream = new Random();
+	}
+
+	public short[] newBlock() {
+		short block[] = new short[0x10];
+		for (int i = 0; i < 0x10; i++) {
+			block[i] = (short) numberStream.nextInt(256);
+		}
+		return block;
+	}
 }
