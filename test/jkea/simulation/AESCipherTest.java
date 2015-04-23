@@ -1,4 +1,4 @@
-package jkea.testing.simulation;
+package jkea.simulation;
 
 import static org.junit.Assert.*;
 import jkea.simulation.AESCipher;

@@ -4,13 +4,13 @@ import java.lang.Math;
 import java.lang.IllegalArgumentException;
 import java.util.Random;
 
-public class HammingTemplate {
+class HammingTemplate {
 
 	private double stdDeviation;
 	private double cNorm;
 	private Random numberStream;
 
-	public HammingTemplate(double variance) {
+	HammingTemplate(double variance) {
 		if (variance <= 0) {
 			throw new IllegalArgumentException("Variance must be positive");
 		}
@@ -18,11 +18,11 @@ public class HammingTemplate {
 		numberStream = new Random();
 	}
 
-	public double getStdDeviation() {
+	double getStdDeviation() {
 		return stdDeviation;
 	}
 
-	public double getcNorm() {
+	double getcNorm() {
 		return cNorm;
 	}
 
@@ -31,7 +31,7 @@ public class HammingTemplate {
 		cNorm = 1. / Math.sqrt(2 * Math.PI * variance);
 	}
 
-	public double leak(short transition) {
+	final double leak(short transition) {
 		if ((transition < 0) || (transition > 255)) {
 			throw new IllegalArgumentException(
 					"Transition must be an unsigned char");
@@ -40,7 +40,7 @@ public class HammingTemplate {
 				* numberStream.nextDouble();
 	}
 
-	public double leakDensity(double leak, short transition) {
+	final double leakDensity(double leak, short transition) {
 		if ((transition < 0) || (transition > 255)) {
 			throw new IllegalArgumentException(
 					"Transition must be an unsigned char");
@@ -53,7 +53,7 @@ public class HammingTemplate {
 		return Math.exp(-x * x / 2) * cNorm;
 	}
 
-	public short hammingWeight(short transition) {
+	final short hammingWeight(short transition) {
 		if ((transition < 0) || (transition > 255)) {
 			throw new IllegalArgumentException(
 					"Transition must be an unsigned char");

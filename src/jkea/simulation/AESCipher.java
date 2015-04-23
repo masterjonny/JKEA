@@ -2,7 +2,7 @@ package jkea.simulation;
 
 import java.util.Random;
 
-public class AESCipher {
+class AESCipher {
 
 	private short sBox[] = { 0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
 			0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76, 0xca, 0x82, 0xc9,
@@ -31,11 +31,11 @@ public class AESCipher {
 
 	private Random numberStream;
 
-	public AESCipher() {
+	AESCipher() {
 		numberStream = new Random();
 	}
 
-	final public short[] newBlock() {
+	final short[] newBlock() {
 		short block[] = new short[0x10];
 		for (int i = 0; i < 0x10; i++) {
 			block[i] = (short) numberStream.nextInt(256);
@@ -43,7 +43,7 @@ public class AESCipher {
 		return block;
 	}
 
-	final public short predict(short plain, short key) {
+	final short predict(short plain, short key) {
 		if ((plain < 0) || (plain > 255)) {
 			throw new IllegalArgumentException("Plain must be an unsigned char");
 		}
@@ -53,7 +53,7 @@ public class AESCipher {
 		return sBox[plain ^ key];
 	}
 
-	final public short[] predict(final short[] plain, final short[] key) {
+	final short[] predict(final short[] plain, final short[] key) {
 		if (plain.length != key.length) {
 			throw new IllegalArgumentException(
 					"Plain text and key length differ");
