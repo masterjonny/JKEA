@@ -17,14 +17,15 @@ public class HammingTemplateTest {
 
 	@Test
 	public void adjustVarianceTest() {
-		double stdDevSolutions[] = { 0, 1, 1.41421, 1.73205, 2, 2.23607,
-				2.44949, 2.64575, 2.82843, 3 };
+		double stdDevSolutions[] = { 1, 1.41421, 1.73205, 2, 2.23607, 2.44949,
+				2.64575, 2.82843, 3 };
 		double cNormSolutions[] = { 0.398942, 0.282095, 0.230329, 0.199471,
 				0.178412, 0.162868, 0.150786, 0.141047, 0.132981 };
 		for (int i = 1; i < 10; ++i) {
 			HammingTemplate newClass = new HammingTemplate(i);
-			assertEquals(stdDevSolutions[i], newClass.getStdDeviation(), 1e-5);
-			assertEquals(cNormSolutions[i], newClass.getcNorm(), 1e-5);
+			assertEquals(stdDevSolutions[i - 1], newClass.getStdDeviation(),
+					1e-5);
+			assertEquals(cNormSolutions[i - 1], newClass.getcNorm(), 1e-5);
 		}
 	}
 
