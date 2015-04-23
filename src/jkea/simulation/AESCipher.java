@@ -35,7 +35,7 @@ public class AESCipher {
 		numberStream = new Random();
 	}
 
-	public short[] newBlock() {
+	final public short[] newBlock() {
 		short block[] = new short[0x10];
 		for (int i = 0; i < 0x10; i++) {
 			block[i] = (short) numberStream.nextInt(256);
@@ -43,7 +43,7 @@ public class AESCipher {
 		return block;
 	}
 
-	public short predict(short plain, short key) {
+	final public short predict(short plain, short key) {
 		if ((plain < 0) || (plain > 255)) {
 			throw new IllegalArgumentException("Plain must be an unsigned char");
 		}
@@ -52,4 +52,18 @@ public class AESCipher {
 		}
 		return sBox[plain ^ key];
 	}
+
+	final public short[] predict(final short[] plain, final short[] key) {
+		if (plain.length != key.length) {
+			throw new IllegalArgumentException(
+					"Plain text and key length differ");
+		}
+		if (plain.length > 0x10) {
+			throw new IllegalArgumentException("Block length too big!");
+		}
+
+		short block[] = new short[0x10];
+		return block;
+	}
+
 }
