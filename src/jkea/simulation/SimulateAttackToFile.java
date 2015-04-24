@@ -10,15 +10,14 @@ public class SimulateAttackToFile {
 		}
 
 		int variance = 0;
-		int runID = 0;
+		final int runID = 0;
 		long numberMessages = 0;
 
 		try {
 			variance = Integer.parseInt(args[0]);
 			numberMessages = Long.parseLong(args[1]);
-			if (args.length == 3) {
+			if (args.length == 3)
 				variance = Integer.parseInt(args[2]);
-			}
 		} catch (final NumberFormatException e) {
 			System.err.println("Arguments are invalid values");
 			System.exit(1);

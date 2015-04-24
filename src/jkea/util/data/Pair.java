@@ -18,6 +18,7 @@ public final class Pair<A, B> extends Tuple {
 							+ array.length);
 		return new Pair<X, X>(array[0], array[1]);
 	}
+
 	public static <X> Pair<X, X> fromCollection(final Collection<X> collection) {
 		return fromIterable(collection);
 	}
