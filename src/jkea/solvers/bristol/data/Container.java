@@ -8,35 +8,35 @@ import jkea.util.data.Pair;
 
 class Container {
 
-	private class SortKeyComparator implements Comparator<Pair<Short, Double>> {
+	private class SortKeyComparator implements Comparator<Pair<Short, Integer>> {
 
 		@Override
-		public int compare(Pair<Short, Double> arg0, Pair<Short, Double> arg1) {
+		public int compare(Pair<Short, Integer> arg0, Pair<Short, Integer> arg1) {
 			return arg0.getValue0().compareTo(arg1.getValue0());
 		}
 
 	}
 
 	private class SortScoreComparator implements
-	Comparator<Pair<Short, Double>> {
+	Comparator<Pair<Short, Integer>> {
 
 		@Override
-		public int compare(Pair<Short, Double> arg0, Pair<Short, Double> arg1) {
+		public int compare(Pair<Short, Integer> arg0, Pair<Short, Integer> arg1) {
 			return arg0.getValue1().compareTo(arg1.getValue1());
 		}
 
 	}
 
-	private final ArrayList<Pair<Short, Double>> data;
+	private final ArrayList<Pair<Short, Integer>> data;
 
-	Container(double[] scores) {
-		data = new ArrayList<Pair<Short, Double>>(scores.length);
+	Container(int[] scores) {
+		data = new ArrayList<Pair<Short, Integer>>(scores.length);
 		for (Short i = 0; i < scores.length; i++)
-			data.add(new Pair<Short, Double>(i, scores[i]));
+			data.add(new Pair<Short, Integer>(i, scores[i]));
 	}
 
-	double[] getAllScores() {
-		final double[] scores = new double[data.size()];
+	int[] getAllScores() {
+		final int[] scores = new int[data.size()];
 		for (int i = 0; i < data.size(); i++)
 			scores[i] = data.get(i).getValue1();
 		return scores;
@@ -44,9 +44,7 @@ class Container {
 
 	short getKeyChunk(int index) {
 		return data.get(index).getValue0();
-	}
-
-	double getScore(int index) {
+	}int getScore(int index) {
 		return data.get(index).getValue1();
 	}
 

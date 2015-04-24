@@ -11,7 +11,7 @@ public class ContainerTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		double[] probs = { 3, 2, 1 };
+		int[] probs = { 3, 2, 1 };
 		testClass = new Container(probs);
 	}
 	
@@ -29,7 +29,7 @@ public class ContainerTest {
 	@Test
 	public void sortKeyChunkTest() {
 		testClass.sortKeyChunk();
-		assertEquals(1, testClass.getScore(2), 1e-9);
+		assertEquals(1, testClass.getScore(2));
 	}
 	
 	
