@@ -61,16 +61,6 @@ public class AESDeviceTest {
 		}
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testIncorrectSize() {
-		ArrayList<HammingTemplate> testTemplates = new ArrayList<HammingTemplate>(
-				5);
-		for (int i = 0; i < 5; i++) {
-			testTemplates.add(new HammingTemplate(1));
-		}
-		new AESDevice(testTemplates);
-	}
-
 	@Test
 	public void testGetTrace() {
 		double[] trace = testClass.getTrace();

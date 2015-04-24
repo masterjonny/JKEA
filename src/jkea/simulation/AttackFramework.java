@@ -9,47 +9,49 @@ import java.util.ArrayList;
 
 class AttackFramework {
 
-	AESDevice device;
 	TemplateAttack attack;
-	ArrayList<HammingTemplate> templates;
+	AESDevice device;
 	short[] key;
 	double[][] prior;
+	ArrayList<HammingTemplate> templates;
 
-	AttackFramework(double variance) {
-		if (variance < 0) {
-			throw new IllegalArgumentException("Invalid variance");
-		}
+	public AttackFramework(double variance) {
+		if (variance < 0)
+			throw new IllegalArgumentException("Variance must be positive");
 		initAttack(variance);
 	}
 
-	void initAttack(double variance) {
-		if (variance < 0) {
-			throw new IllegalArgumentException("Invalid variance");
-		}
+	public short[] getKey() {
+		return key;
+	}
+
+	public double[][] getPrior() {
+		return prior;
+	}
+
+	public void initAttack(double variance) {
+		if (variance < 0)
+			throw new IllegalArgumentException("Variance must be positive");
 		templates = new ArrayList<HammingTemplate>(0x10);
-		for (int i = 0; i < 0x10; i++) {
+		for (int i = 0; i < 0x10; i++)
 			templates.add(new HammingTemplate(variance));
-		}
 		device = new AESDevice(templates);
 		attack = new TemplateAttack(templates);
 		prior = new double[0x10][0x100];
 		key = device.getKey();
 	}
 
-	void runAttack(long numberMessages) {
-		if (numberMessages < 0) {
+	public void runAttack(long numberMessages) {
+		if (numberMessages < 0)
 			throw new IllegalArgumentException("Invalid number of messages");
-		}
-		for (int i = 0; i < 0x10; i++) {
-			for (int j = 0; j < 0x100; j++) {
+		for (int i = 0; i < 0x10; i++)
+			for (int j = 0; j < 0x100; j++)
 				prior[i][j] = 1. / 0x100;
-			}
-		}
 
 		for (long i = 0; i < numberMessages; i++) {
 			device.newPlain();
-			short[] plain = device.getPlain();
-			double[] trace = device.getTrace();
+			final short[] plain = device.getPlain();
+			final double[] trace = device.getTrace();
 			prior = attack.updatePrior(prior, plain, trace);
 		}
 	}
@@ -60,33 +62,23 @@ class AttackFramework {
 			writer.write("[");
 			for (int i = 0; i < 0x10; i++) {
 				writer.write(Integer.toHexString(key[i] & 0xffff));
-				if (i != 0x10 - 1)
+				if (i != (0x10 - 1))
 					writer.write(",");
 			}
-			writer.write("]");
-			writer.write(System.getProperty("line.separator"));
+			writer.write("]" + System.getProperty("line.separator"));
 			for (int i = 0; i < 0x10; i++) {
 				writer.write("[");
 				for (int j = 0; j < 0x100; j++) {
 					writer.write(Double.toString(prior[i][j]));
-					if (j != 0x100 - 1)
+					if (j != (0x100 - 1))
 						writer.write(",");
 				}
-				writer.write("]");
-				writer.write(System.getProperty("line.separator"));
+				writer.write("]" + System.getProperty("line.separator"));
 			}
 
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 			throw new IllegalArgumentException(
 					"Filename provided cannot be opened for writing!");
 		}
-	}
-
-	public short[] getKey() {
-		return key;
-	}
-
-	public double[][] getPrior() {
-		return prior;
 	}
 }

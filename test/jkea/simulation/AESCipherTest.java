@@ -56,46 +56,4 @@ public class AESCipherTest {
 			}
 		}
 	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void predictBoundsUpper() {
-		testClass.predict((short) 1, (short) 256);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void predictBoundsUpper2() {
-		testClass.predict((short) 256, (short) 1);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void predictBoundsLower() {
-		testClass.predict((short) -1, (short) 1);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void predictBoundsLower2() {
-		testClass.predict((short) 1, (short) -1);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void predictSizeMismatch() {
-		short[] block1 = new short[15];
-		short[] block2 = new short[14];
-		testClass.predict(block1, block2);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void predictSizeMismatchTwo() {
-		short[] block1 = new short[15];
-		short[] block2 = new short[14];
-		testClass.predict(block2, block1);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void predictSizeTooBig() {
-		short[] block1 = new short[16];
-		short[] block2 = new short[14];
-		testClass.predict(block2, block1);
-	}
-
 }

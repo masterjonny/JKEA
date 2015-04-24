@@ -25,7 +25,7 @@ public class HammingTemplateTest {
 			HammingTemplate newClass = new HammingTemplate(i);
 			assertEquals(stdDevSolutions[i - 1], newClass.getStdDeviation(),
 					1e-5);
-			assertEquals(cNormSolutions[i - 1], newClass.getcNorm(), 1e-5);
+			assertEquals(cNormSolutions[i - 1], newClass.getNorm(), 1e-5);
 		}
 	}
 
@@ -71,50 +71,5 @@ public class HammingTemplateTest {
 		for(int i = 0; i < 5; i++) {
 			assertEquals(solutions[i], testClass.leak(inputs[i]), 1 + 1e-5);
 		}
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void vairanceLower() {
-		new HammingTemplate(0);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void varianceLowerTwo() {
-		new HammingTemplate(-1);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void hammingWeightBoundsLower() {
-		testClass.hammingWeight((short) -1);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void hammingWeightBoundsUpper() {
-		testClass.hammingWeight((short) 256);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void leakBoundsLower() {
-		testClass.leak((short) -1);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void leakBoundsUpper() {
-		testClass.leak((short) 256);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void leakDensityBoundsLower() {
-		testClass.leakDensity(-0.5, (short)128);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void leakDensityBoundsLowerTwo() {
-		testClass.leakDensity(0.5, (short)-1);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void leakDenstiyBoundsUpperTwo() {
-		testClass.leakDensity(0.5, (short)256);
 	}
 }
