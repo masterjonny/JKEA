@@ -25,7 +25,6 @@ class Solver {
 	}
 
 	private Integer[] calculateCapacitys() {
-		int[][] sortedScores = container.getSortedScores();	
 		TreeSet<Integer> capacs = new TreeSet<Integer>();
 		
 		for(int k = 0; k < chunks; k++) {
