@@ -16,13 +16,6 @@ public abstract class Tuple implements Iterable<Object>, Serializable,
 	private final Object[] valueArray;
 	private final List<Object> valueList;
 
-	@Deprecated
-	protected Tuple(final int size, final Object... values) {
-		super();
-		valueArray = values;
-		valueList = Arrays.asList(values);
-	}
-
 	protected Tuple(final Object... values) {
 		super();
 		valueArray = values;
