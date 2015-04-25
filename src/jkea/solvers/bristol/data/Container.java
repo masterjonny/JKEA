@@ -18,7 +18,7 @@ class Container {
 	}
 
 	private class SortScoreComparator implements
-	Comparator<Pair<Short, Integer>> {
+			Comparator<Pair<Short, Integer>> {
 
 		@Override
 		public int compare(Pair<Short, Integer> arg0, Pair<Short, Integer> arg1) {
@@ -44,7 +44,9 @@ class Container {
 
 	short getKeyChunk(int index) {
 		return data.get(index).getValue0();
-	}int getScore(int index) {
+	}
+
+	int getScore(int index) {
 		return data.get(index).getValue1();
 	}
 
