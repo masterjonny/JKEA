@@ -17,16 +17,14 @@ public class VeyratSolver extends GenericSolver implements SolverInterface {
 		long rank = 0;
 		while (!found) {
 			e.next();
-			ArrayList<Short> next = e.getKey();
+			final ArrayList<Short> next = e.getKey();
 			found = true;
-			for (int i = 0; i < next.size(); i++) {
+			for (int i = 0; i < next.size(); i++)
 				if (next.get(i) != key[i]) {
 					found = false;
 					break;
 				}
-			}
 			rank++;
-			System.out.println(rank);
 		}
 		return rank;
 

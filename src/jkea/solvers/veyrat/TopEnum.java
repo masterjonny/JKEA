@@ -2,18 +2,16 @@ package jkea.solvers.veyrat;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 
 import jkea.solvers.veyrat.data.Outcome;
 import jkea.solvers.veyrat.data.PMF;
-import jkea.util.data.Pair;
 
 public class TopEnum extends NodeEnum {
 
-	private ArrayList<Short> mKey;
-	private ArrayList<Short> mPerm;
-	private ArrayList<PMF> mDistributionSet;
+	private final ArrayList<PMF> mDistributionSet;
+	private final ArrayList<Short> mKey;
+	private final ArrayList<Short> mPerm;
 
 	public TopEnum(double[][] scores) {
 		mDistributionSet = new ArrayList<PMF>();
@@ -21,10 +19,9 @@ public class TopEnum extends NodeEnum {
 		mKey = new ArrayList<Short>();
 		permute(scores);
 		for (int i = 0; i < scores.length; i++) {
-			ArrayList<Double> t = new ArrayList<Double>(scores[i].length);
-			for (int j = 0; j < scores[i].length; j++) {
+			final ArrayList<Double> t = new ArrayList<Double>(scores[i].length);
+			for (int j = 0; j < scores[i].length; j++)
 				t.add(scores[mPerm.get(i)][j]);
-			}
 			mDistributionSet.add(new PMF(t));
 		}
 		init(mDistributionSet, 0, scores.length);
@@ -65,14 +62,14 @@ public class TopEnum extends NodeEnum {
 				distributionSet.length);
 		for (final double[] element : distributionSet) {
 			double m = element[0];
-			for (int j = 0; j < element.length; j++)
-				m = m > element[j] ? m : element[j];
+			for (final double element2 : element)
+				m = m > element2 ? m : element2;
 			double s = 0;
-			for (int j = 0; j < element.length; j++)
-				s += Math.exp(element[j] - m);
+			for (final double element2 : element)
+				s += Math.exp(element2 - m);
 			double e = 0;
-			for (int j = 0; j < element.length; j++) {
-				final double p = Math.exp(element[j] - m) / s;
+			for (final double element2 : element) {
+				final double p = Math.exp(element2 - m) / s;
 				e -= p * Math.log(p);
 			}
 			entropies.add(e / Math.log(2));
@@ -81,7 +78,7 @@ public class TopEnum extends NodeEnum {
 		for (int i = 0; i < n; i++)
 			mPerm.add((short) i);
 
-		for (int i = n; i > 1; i >>= 1) {
+		for (int i = n; i > 1; i >>= 1)
 			for (int j = 0; j < n; j += i) {
 				double s1 = 0.0;
 				double s2 = 0.0;
@@ -90,26 +87,24 @@ public class TopEnum extends NodeEnum {
 				while (is1 <= is2) {
 					double maxEntropy = 0;
 					short m = 0;
-					for (int k = 0; k < (is2 + 1) - is1; k++) {
+					for (int k = 0; k < ((is2 + 1) - is1); k++)
 						if (entropies.get(mPerm.get(k + is1)) > maxEntropy) {
 							maxEntropy = entropies.get(mPerm.get(k + is1));
 							m = mPerm.get(k + is1);
 						}
-					}
 					if (s1 < s2) {
 						s1 += entropies.get(m);
-						int t = mPerm.indexOf(m);
+						final int t = mPerm.indexOf(m);
 						Collections.swap(mPerm, is1, t);
 						++is1;
 					} else {
 						s2 += entropies.get(m);
-						int t = mPerm.indexOf(m);
+						final int t = mPerm.indexOf(m);
 						Collections.swap(mPerm, is2, t);
 						--is2;
 					}
 				}
 			}
-		}
 	}
 
 }

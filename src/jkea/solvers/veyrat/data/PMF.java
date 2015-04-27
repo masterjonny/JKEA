@@ -30,7 +30,7 @@ public class PMF {
 
 	}
 
-	private ArrayList<PMFOutcome> mDistribution;
+	private final ArrayList<PMFOutcome> mDistribution;
 
 	public PMF(final ArrayList<Double> pDistribution) {
 		mDistribution = new ArrayList<PMFOutcome>(pDistribution.size());

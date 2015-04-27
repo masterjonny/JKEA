@@ -21,7 +21,7 @@ public class Knapsack {
 			data.add(new Container(scores[i]));
 	}
 
-	int calcualteMinCapacity() {
+	long calcualteMinCapacity() {
 		final int[] depths = new int[chunks];
 		for (int i = 0; i < chunks; i++)
 			depths[i] = 0;

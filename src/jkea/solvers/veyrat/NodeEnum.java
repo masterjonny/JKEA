@@ -14,12 +14,11 @@ class NodeEnum extends Enum {
 	protected Enum mEnumerationY;
 	private long mX;
 	private long mY;
-	
-	protected NodeEnum()
-	{
+
+	protected NodeEnum() {
 		mBoundary = new BinaryHeap();
-	    mX = 0;
-	    mY = 0;
+		mX = 0;
+		mY = 0;
 	}
 
 	NodeEnum(final ArrayList<PMF> pDistribtuionSet, int pOffset, int pWidth) {
@@ -38,7 +37,7 @@ class NodeEnum extends Enum {
 		final int n1 = (int) ((mWidth + 1) / 2);
 		final int n2 = (int) (mWidth - n1);
 		mEnumerationX = (n1 > 1) ? new NodeEnum(pDistribtuionSet, pOffset, n1)
-				: new LeafEnum(pDistribtuionSet.get(pOffset));
+		: new LeafEnum(pDistribtuionSet.get(pOffset));
 		mEnumerationY = (n2 > 1) ? new NodeEnum(pDistribtuionSet, pOffset + n1,
 				n2) : new LeafEnum(pDistribtuionSet.get(pOffset + n1));
 
@@ -74,22 +73,22 @@ class NodeEnum extends Enum {
 		final Outcome c = memorize();
 		final long x = c.x();
 		final long y = c.y();
-		mX = mX > x ? mX : x;
-		mY = mY > y ? mY : y;
+		mX = Math.max(mX, x);
+		mY = Math.max(mY, y);
 		mBoundary.pop();
 
-		if (mEnumerationX.reserve(x + 1)) {
-			double p = mEnumerationX.getProbability(x + 1);
-			p += mEnumerationY.getProbability(y);
-			mBoundary.push(p, x + 1, y);
-		} else
+		if (mEnumerationX.reserve(x + 1))
+			mBoundary.push(
+					mEnumerationX.getProbability(x + 1)
+							+ mEnumerationY.getProbability(y), x + 1, y);
+		else
 			mEnumerationY.clear(y);
 
-		if (mEnumerationY.reserve(y + 1)) {
-			double p = mEnumerationY.getProbability(y + 1);
-			p += mEnumerationX.getProbability(x);
-			mBoundary.push(p, x, y + 1);
-		} else
+		if (mEnumerationY.reserve(y + 1))
+			mBoundary.push(
+					mEnumerationY.getProbability(y + 1)
+							+ mEnumerationX.getProbability(x), x, y + 1);
+		else
 			mEnumerationX.clear(x);
 
 		return true;
