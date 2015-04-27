@@ -17,7 +17,7 @@ class LeafEnum extends Enum {
 	}
 
 	@Override
-	boolean next() {
+	public boolean next() {
 		return true;
 	}
 }

@@ -37,7 +37,7 @@ class Enum {
 		return mBufferLabel.listIterator((int) (pIndex * mWidth));
 	}
 
-	boolean next() {
+	public boolean next() {
 		return false;
 	}
 

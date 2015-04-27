@@ -33,6 +33,7 @@ public class PMF {
 	private ArrayList<PMFOutcome> mDistribution;
 
 	public PMF(final ArrayList<Double> pDistribution) {
+		mDistribution = new ArrayList<PMFOutcome>(pDistribution.size());
 		short index = 0;
 		for (final Double val : pDistribution)
 			mDistribution.add(new PMFOutcome(index++, val));

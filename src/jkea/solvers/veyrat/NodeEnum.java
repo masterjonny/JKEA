@@ -9,11 +9,18 @@ import jkea.solvers.veyrat.data.PMF;
 
 class NodeEnum extends Enum {
 
-	private final BinaryHeap mBoundary;
-	private Enum mEnumerationX;
-	private Enum mEnumerationY;
+	protected final BinaryHeap mBoundary;
+	protected Enum mEnumerationX;
+	protected Enum mEnumerationY;
 	private long mX;
 	private long mY;
+	
+	protected NodeEnum()
+	{
+		mBoundary = new BinaryHeap();
+	    mX = 0;
+	    mY = 0;
+	}
 
 	NodeEnum(final ArrayList<PMF> pDistribtuionSet, int pOffset, int pWidth) {
 		mBoundary = new BinaryHeap();
@@ -22,7 +29,7 @@ class NodeEnum extends Enum {
 		init(pDistribtuionSet, pOffset, pWidth);
 	}
 
-	private void init(final ArrayList<PMF> pDistribtuionSet, int pOffset,
+	protected void init(final ArrayList<PMF> pDistribtuionSet, int pOffset,
 			int pWidth) {
 		mWidth = pWidth;
 		for (int i = 0; i < mWidth; ++i)
@@ -42,7 +49,7 @@ class NodeEnum extends Enum {
 		mBoundary.push(p, 0, 0);
 	}
 
-	final Outcome memorize() {
+	Outcome memorize() {
 		final Outcome c = mBoundary.top();
 
 		mBufferProbs.add(c.p());
@@ -60,8 +67,8 @@ class NodeEnum extends Enum {
 	}
 
 	@Override
-	boolean next() {
-		if (mBoundary.empty() == false)
+	public boolean next() {
+		if (mBoundary.empty())
 			return false;
 
 		final Outcome c = memorize();

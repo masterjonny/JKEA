@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 
-class AttackFramework {
+public class AttackFramework {
 
 	TemplateAttack attack;
 	AESDevice device;

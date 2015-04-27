@@ -41,7 +41,7 @@ public class BinaryHeap {
 
 	public void push(double pP, long pX, long pY) {
 		int hole = mQueue.size();
-		mQueue.ensureCapacity(hole + 1);
+		mQueue.add(null);
 		int pred = hole >> 1;
 			while (mQueue.get(pred).p() < pP) {
 				mQueue.set(hole, mQueue.get(pred));
