@@ -9,13 +9,16 @@ public class KEARuntime {
 
 		final int VARIANCE = 2;
 		final long NUMBERMESSAGES = 30;
-
-		final AttackFramework a = new AttackFramework(VARIANCE);
-		a.runAttack(NUMBERMESSAGES);
-
-		final KEASolver k = new KEASolver(a.getPrior(), a.getKey());
-		final long rank = k.solve();
-		System.out.println("KEY RANK: " + rank);
+		final int REPLICATE = 1000000;
+		
+		for(int i = 0; i < REPLICATE; i++) {
+			final AttackFramework a = new AttackFramework(VARIANCE);
+			a.runAttack(NUMBERMESSAGES);
+	
+			final KEASolver k = new KEASolver(a.getPrior(), a.getKey());
+			final long rank = k.solve();
+			System.out.println("KEY RANK: " + rank);
+		}
 	}
 	
 }

@@ -1,7 +1,6 @@
 package jkea.solvers.bristol;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.TreeSet;
 
 import jkea.solvers.bristol.data.KeyLeaf;
@@ -26,23 +25,23 @@ public class KEA {
 		this.key = key;
 	}
 
-	public int buildKeys(ArrayList<KeyLeaf> keys, ArrayList<Short> soFar,
-			short[] realKey) {
-		Collections.rotate(soFar, -1);
-		final int length = keys.size();
+	public int buildKeys(ArrayList<KeyLeaf> keys, ArrayList<Short> initKey,
+			short[] realKey, int shiftToo, int keyLength) {
+		for(int i = shiftToo; i < keyLength - 1; i++) 
+			initKey.set(i, initKey.get(i + 1));
 		int flag = 0;
-		for (int i = 0; i < length; i++) {
+		for (int i = 0, ii = keys.size(); i < ii; i++) {
 			final KeyLeaf keysLocal = keys.get(i);
 			if (keysLocal.hasList()) {
-				final ArrayList<Short> newSoFar = new ArrayList<Short>(soFar);
+				final ArrayList<Short> newSoFar = new ArrayList<Short>(initKey);
 				newSoFar.set(realKey.length - 1, keysLocal.getKeyChunk());
 				flag = flag
-						^ buildKeys(keysLocal.getKeyList(), newSoFar, realKey);
+						^ buildKeys(keysLocal.getKeyList(), newSoFar, realKey, shiftToo - 1, keyLength);
 			} else {
-				soFar.set(realKey.length - 1, keysLocal.getKeyChunk());
+				initKey.set(realKey.length - 1, keysLocal.getKeyChunk());
 				flag = 1;
-				for (int j = 0; j < soFar.size(); j++)
-					if (soFar.get(j) != realKey[j]) {
+				for (int j = 0, jj = keyLength; j < jj; j++)
+					if (initKey.get(j) != realKey[j]) {
 						flag = 0;
 						break;
 					}
@@ -52,6 +51,7 @@ public class KEA {
 	}
 
 	private Integer[] calculateCapacitys() {
+		container.sortScore();
 		final TreeSet<Integer> capacs = new TreeSet<Integer>();
 
 		for (int k = 0; k < chunks; k++) {
@@ -61,10 +61,10 @@ public class KEA {
 			for (int i = k; i < chunks; i++)
 				for (int j = 0; j < (rows - 1); j++) {
 					depthCurrent[i] += 1;
-					capacs.add(container.calculateCapacity(depthCurrent));
+					capacs.add(container.calculateCapacityWithoutSort(depthCurrent));
 				}
 		}
-
+		container.sortKeyChunk();
 		return capacs.toArray(new Integer[capacs.size()]);
 	}
 
@@ -136,6 +136,13 @@ public class KEA {
 		final int length = w.getLength();
 		final ArrayList<Integer> paths = w.getPaths();
 
+		int offset;
+		int row;
+		int col;
+		int zeroChild;
+		int oneChild;
+		int iMod;
+		
 		final ArrayList<ArrayList<KeyLeaf>> keyList = new ArrayList<ArrayList<KeyLeaf>>(
 				lengthCapacity);
 		final ArrayList<ArrayList<KeyLeaf>> oldKeyList = new ArrayList<ArrayList<KeyLeaf>>(
@@ -147,26 +154,28 @@ public class KEA {
 			oldKeyList.add(new ArrayList<KeyLeaf>());
 
 		for (int i = length - 3; i > -1; i--) {
-			short row = (short) (i % rows);
-			final int offset = ((i - row) % (rows * capacity)) / rows;
-			final int col = (i - row - (offset * rows)) / (rows * capacity);
+			row = i % rows;
+			offset = ((i - row) % (rows * capacity)) / rows;
+			col = (i - row - (offset * rows)) / (rows * capacity);
 			if (paths.get(i) != 0) {
-				final int iMod = i % lengthCapacity;
-				final int zeroChild = zeroChild(w, i);
-				final int oneChild = oneChild(w, i);
-				row = (short) (i % rows);
+				iMod = i % lengthCapacity;
+				zeroChild = zeroChild(w, i);
+				oneChild = oneChild(w, i);
 				keyList.set(iMod, new ArrayList<KeyLeaf>());
 				if (zeroChild != w.getFail()) {
 					keyList.set(iMod, keyList.get(iMod + 1));
 					keyList.set(iMod + 1, new ArrayList<KeyLeaf>());
 				}
-				if (oneChild == w.getAccept())
-					keyList.get(iMod).add(new KeyLeaf(row));
-				else if ((oneChild != w.getFail())
-						&& (oldKeyList.get(offset + scores[col][row]).size() != 0))
+				if (oneChild == w.getAccept()) {
+					keyList.get(iMod).add(new KeyLeaf((short) row));
+				}
+				else if ((oneChild != w.getFail()) 
+						&& (oldKeyList.get(offset + scores[col][row]).size() != 0)) {
 					keyList.get(iMod).add(
-							new KeyLeaf(row, oldKeyList.get(offset
+							new KeyLeaf((short) row, oldKeyList.get(offset
 									+ scores[col][row])));
+				}
+					
 			}
 			if ((row == 0) && (offset == 0))
 				for (int j = 0; j < capacity; j++)
@@ -196,7 +205,7 @@ public class KEA {
 			final ArrayList<Short> initKey = new ArrayList<Short>(chunks);
 			for (int j = 0; j < chunks; j++)
 				initKey.add((short) 0);
-			flag = buildKeys(keyList, initKey, key);
+			flag = buildKeys(keyList, initKey, key, chunks - 1, chunks);
 			if (flag == 1)
 				break;
 		}

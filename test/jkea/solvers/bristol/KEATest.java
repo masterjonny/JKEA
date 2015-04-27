@@ -3,7 +3,6 @@ package jkea.solvers.bristol;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-
 import jkea.solvers.bristol.data.KeyLeaf;
 import jkea.solvers.bristol.data.WorkBlock;
 
@@ -79,13 +78,12 @@ public class KEATest {
 		w.setCapacity(7);
 		w.setLength(65);
 		testClass.pathCountLoop(w);
-		ArrayList<Integer> p = w.getPaths();
 		ArrayList<KeyLeaf> keys = testClass.pathEnumerate(w);
-		ArrayList<Short> soFar = new ArrayList<Short>(16);
+		ArrayList<Short> soFar = new ArrayList<Short>(3);
 		for (int i = 0; i < 3; i++)
 			soFar.add((short)0);
 		final short[] key = { 0, 1, 2 };
-		testClass.buildKeys(keys, soFar, key);
+		testClass.buildKeys(keys, soFar, key, 2, 3);
 	}
 	
 	@Test

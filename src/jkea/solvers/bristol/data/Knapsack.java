@@ -39,7 +39,27 @@ public class Knapsack {
 		}
 		return total;
 	}
+	
+	public int calculateCapacityWithoutSort (int[] depths) {
+		if (depths.length != chunks)
+			throw new IllegalArgumentException("Incorrect number of depths");
+		int total = 0;
+		for (int i = 0; i < chunks; i++) {
+			total += data.get(i).getScore(depths[i]);;
+		}
+		return total;
+	}
+	
+	public void sortScore() {
+		for (int i = 0; i < chunks; i++)
+			data.get(i).sortScore();
+	}
 
+	public void sortKeyChunk() {
+		for (int i = 0; i < chunks; i++)
+			data.get(i).sortScore();
+	}
+	
 	public int getChunks() {
 		return chunks;
 	}

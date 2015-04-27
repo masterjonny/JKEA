@@ -13,9 +13,9 @@ public class KeyLeaf {
 		hasList = false;
 	}
 	
-	public KeyLeaf(short keyChunk, ArrayList<KeyLeaf> keyList) {
+	public KeyLeaf(short keyChunk, ArrayList<KeyLeaf> linkedList) {
 		this.keyChunk = keyChunk;
-		this.keyList = keyList;
+		this.keyList = linkedList;
 		hasList = true;
 	}
 	
