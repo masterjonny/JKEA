@@ -4,7 +4,7 @@ import jkea.solvers.bristol.KEA;
 
 public class KEASolver extends GenericSolver implements SolverInterface {
 
-	KEASolver(double[][] scores, short[] key) {
+	public KEASolver(double[][] scores, short[] key) {
 		super(scores, key);
 	}
 
@@ -16,8 +16,7 @@ public class KEASolver extends GenericSolver implements SolverInterface {
 				intScores[i][j] = (int) Math.abs(scores[i][j]);
 
 		final KEA k = new KEA(intScores, key);
-
-		return 0;
+		return k.run();
 	}
 
 }

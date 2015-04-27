@@ -1,9 +1,9 @@
 package jkea.runtime;
 
 import jkea.simulation.AttackFramework;
-import jkea.solvers.VeyratSolver;
+import jkea.solvers.KEASolver;
 
-public class VeyratRuntime {
+public class KEARuntime {
 
 	public static void main(String[] args) {
 
@@ -13,9 +13,9 @@ public class VeyratRuntime {
 		final AttackFramework a = new AttackFramework(VARIANCE);
 		a.runAttack(NUMBERMESSAGES);
 
-		final VeyratSolver v = new VeyratSolver(a.getPrior(), a.getKey());
-		final long rank = v.solve();
+		final KEASolver k = new KEASolver(a.getPrior(), a.getKey());
+		final long rank = k.solve();
 		System.out.println("KEY RANK: " + rank);
 	}
-
+	
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
+import jkea.solvers.bristol.data.KeyLeaf;
 import jkea.solvers.bristol.data.WorkBlock;
 
 import org.junit.Before;
@@ -47,7 +48,7 @@ public class KEATest {
 		w.setFail(63);
 		w.setAccept(64);
 		w.setCapacity(7);
-		w.setLength(65);
+		w.setLength((3 * w.getCapacity()) * 3 + 2);
 		testClass.pathCountLoop(w);
 		final ArrayList<Integer> paths = w.getPaths();
 		final int[] solutions = { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -55,11 +56,38 @@ public class KEATest {
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 				1, 1, 1, 0, 0, 0 };
 		for (int i = 0; i < 63; i++) {
-			System.out.println(i);
 			assertEquals(solutions[i], (int) paths.get(i));
 		}
 	}
 
+	@Test 
+	public void enumerateTest() {
+		final WorkBlock w = new WorkBlock();
+		w.setFail(63);
+		w.setAccept(64);
+		w.setCapacity(7);
+		w.setLength(65);
+		testClass.pathCountLoop(w);
+		testClass.pathEnumerate(w);
+	}
+	
+	@Test
+	public void reBuildTest() {
+		final WorkBlock w = new WorkBlock();
+		w.setFail(63);
+		w.setAccept(64);
+		w.setCapacity(7);
+		w.setLength(65);
+		testClass.pathCountLoop(w);
+		ArrayList<Integer> p = w.getPaths();
+		ArrayList<KeyLeaf> keys = testClass.pathEnumerate(w);
+		ArrayList<Short> soFar = new ArrayList<Short>(16);
+		for (int i = 0; i < 3; i++)
+			soFar.add((short)0);
+		final short[] key = { 0, 1, 2 };
+		testClass.buildKeys(keys, soFar, key);
+	}
+	
 	@Test
 	public void zeroChildTest() {
 		final WorkBlock w = new WorkBlock();
