@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class Tuple implements Iterable<Object>, Serializable,
-Comparable<Tuple> {
+		Comparable<Tuple> {
 
 	private static final long serialVersionUID = 5431085632328343101L;
 

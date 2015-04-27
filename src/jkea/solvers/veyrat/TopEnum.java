@@ -64,15 +64,15 @@ public class TopEnum extends NodeEnum {
 			double m = element[0];
 			for (final double element2 : element)
 				m = m > element2 ? m : element2;
-			double s = 0;
-			for (final double element2 : element)
-				s += Math.exp(element2 - m);
-			double e = 0;
-			for (final double element2 : element) {
-				final double p = Math.exp(element2 - m) / s;
-				e -= p * Math.log(p);
-			}
-			entropies.add(e / Math.log(2));
+				double s = 0;
+				for (final double element2 : element)
+					s += Math.exp(element2 - m);
+				double e = 0;
+				for (final double element2 : element) {
+					final double p = Math.exp(element2 - m) / s;
+					e -= p * Math.log(p);
+				}
+				entropies.add(e / Math.log(2));
 		}
 		final int n = distributionSet.length;
 		for (int i = 0; i < n; i++)

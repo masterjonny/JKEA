@@ -37,7 +37,7 @@ class NodeEnum extends Enum {
 		final int n1 = (int) ((mWidth + 1) / 2);
 		final int n2 = (int) (mWidth - n1);
 		mEnumerationX = (n1 > 1) ? new NodeEnum(pDistribtuionSet, pOffset, n1)
-		: new LeafEnum(pDistribtuionSet.get(pOffset));
+				: new LeafEnum(pDistribtuionSet.get(pOffset));
 		mEnumerationY = (n2 > 1) ? new NodeEnum(pDistribtuionSet, pOffset + n1,
 				n2) : new LeafEnum(pDistribtuionSet.get(pOffset + n1));
 
@@ -80,14 +80,14 @@ class NodeEnum extends Enum {
 		if (mEnumerationX.reserve(x + 1))
 			mBoundary.push(
 					mEnumerationX.getProbability(x + 1)
-							+ mEnumerationY.getProbability(y), x + 1, y);
+					+ mEnumerationY.getProbability(y), x + 1, y);
 		else
 			mEnumerationY.clear(y);
 
 		if (mEnumerationY.reserve(y + 1))
 			mBoundary.push(
 					mEnumerationY.getProbability(y + 1)
-							+ mEnumerationX.getProbability(x), x, y + 1);
+					+ mEnumerationX.getProbability(x), x, y + 1);
 		else
 			mEnumerationX.clear(x);
 
