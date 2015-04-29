@@ -9,7 +9,7 @@ public class KEARuntime {
 
 		final int VARIANCE = 2;
 		final long NUMBERMESSAGES = 30;
-		final int REPLICATE = 1000000;
+		final int REPLICATE = 10000;
 		
 		for(int i = 0; i < REPLICATE; i++) {
 			final AttackFramework a = new AttackFramework(VARIANCE);
