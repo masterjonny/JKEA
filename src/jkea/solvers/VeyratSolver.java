@@ -9,6 +9,10 @@ public class VeyratSolver extends GenericSolver implements SolverInterface {
 	public VeyratSolver(double[][] scores, short[] key) {
 		super(scores, key);
 	}
+	
+	public VeyratSolver(int[][] scores, short[] key) {
+		super(scores, key);
+	}
 
 	@Override
 	public long solve() {

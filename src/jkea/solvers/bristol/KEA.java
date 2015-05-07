@@ -25,28 +25,27 @@ public class KEA {
 		this.key = key;
 	}
 
-	public int buildKeys(ArrayList<KeyLeaf> keys, ArrayList<Short> initKey,
+	public boolean buildKeys(ArrayList<KeyLeaf> keys, ArrayList<Short> initKey,
 			short[] realKey, int shiftToo, int keyLength) {
-		for(int i = shiftToo; i < keyLength - 1; i++) 
+		for (int i = shiftToo; i < (keyLength - 1); i++)
 			initKey.set(i, initKey.get(i + 1));
-		int flag = 0;
-		for (int i = 0, ii = keys.size(); i < ii; i++) {
-			final KeyLeaf keysLocal = keys.get(i);
+		boolean flag = false;
+		for (final KeyLeaf keysLocal : keys)
 			if (keysLocal.hasList()) {
 				final ArrayList<Short> newSoFar = new ArrayList<Short>(initKey);
 				newSoFar.set(realKey.length - 1, keysLocal.getKeyChunk());
 				flag = flag
-						^ buildKeys(keysLocal.getKeyList(), newSoFar, realKey, shiftToo - 1, keyLength);
+						| buildKeys(keysLocal.getKeyList(), newSoFar, realKey,
+								shiftToo - 1, keyLength);
 			} else {
 				initKey.set(realKey.length - 1, keysLocal.getKeyChunk());
-				flag = 1;
-				for (int j = 0, jj = keyLength; j < jj; j++)
-					if (initKey.get(j) != realKey[j]) {
-						flag = 0;
+				for (int j = 0, jj = keyLength; j < jj; j++) {
+					if (initKey.get(j) != realKey[j])
 						break;
-					}
+					if (j == (jj - 1))
+						flag = true;
+				}
 			}
-		}
 		return flag;
 	}
 
@@ -61,11 +60,22 @@ public class KEA {
 			for (int i = k; i < chunks; i++)
 				for (int j = 0; j < (rows - 1); j++) {
 					depthCurrent[i] += 1;
-					capacs.add(container.calculateCapacityWithoutSort(depthCurrent));
+					capacs.add(container
+							.calculateCapacityWithoutSort(depthCurrent));
 				}
 		}
 		container.sortKeyChunk();
 		return capacs.toArray(new Integer[capacs.size()]);
+	}
+
+	public long keyRank() {
+		final WorkBlock w = new WorkBlock();
+		w.setCapacity(container.calculateCapacityWithoutSort(key));
+		w.setLength(((rows * w.getCapacity()) * chunks) + 2);
+		w.setFail(w.getLength() - 2);
+		w.setAccept(w.getLength() - 1);
+		pathCountLoop(w);
+		return w.getPaths().get(w.getAccept());
 	}
 
 	int oneChild(WorkBlock w, int i) {
@@ -94,39 +104,39 @@ public class KEA {
 					+ ((col + 1) * capacity * rows);
 	}
 
-	private int pathCount(WorkBlock w, int index) {
+	private long pathCount(WorkBlock w, int index) {
 		final int length = w.getLength();
-		final ArrayList<Integer> localCount = new ArrayList<Integer>(length);
+		final ArrayList<Long> localCount = new ArrayList<Long>(length);
 		for (int i = 0; i < length; i++)
-			localCount.add(0);
-		localCount.set(index, 1);
+			localCount.add((long) 0);
+		localCount.set(index, (long)1);
 
 		for (int i = index - 1; i > -1; i--)
 			localCount.set(
 					i,
 					localCount.get(zeroChild(w, i))
-					+ localCount.get(oneChild(w, i)));
+							+ localCount.get(oneChild(w, i)));
 		return localCount.get(0);
 	}
 
 	void pathCountLoop(WorkBlock w) {
 		final int capacity = w.getCapacity();
 		final int length = w.getLength();
-		final ArrayList<Integer> paths = new ArrayList<Integer>(length);
+		final ArrayList<Long> paths = new ArrayList<Long>(length);
 		for (int i = 0; i < length; i++)
-			paths.add(0);
-		paths.set(0, 1);
+			paths.add((long) 0);
+		paths.set(0, (long)1);
 
 		for (int i = 0; i < chunks; i++)
 			for (int j = 0; j < capacity; j++) {
 				final int location = (i * rows * capacity) + (j * rows);
 				if (paths.get(location) == 1)
 					for (int k = 0; k < rows; k++) {
-						paths.set(location + k, 1);
-						paths.set(oneChild(w, location + k), 1);
+						paths.set(location + k, (long)1);
+						paths.set(oneChild(w, location + k), (long)1);
 					}
 			}
-		paths.set(length - 1, pathCount(w, length - 1));
+		paths.set(length - 1, (long)pathCount(w, length - 1));
 		w.setPaths(paths);
 	}
 
@@ -134,7 +144,7 @@ public class KEA {
 		final int capacity = w.getCapacity();
 		final int lengthCapacity = rows * capacity;
 		final int length = w.getLength();
-		final ArrayList<Integer> paths = w.getPaths();
+		final ArrayList<Long> paths = w.getPaths();
 
 		int offset;
 		int row;
@@ -142,7 +152,7 @@ public class KEA {
 		int zeroChild;
 		int oneChild;
 		int iMod;
-		
+
 		final ArrayList<ArrayList<KeyLeaf>> keyList = new ArrayList<ArrayList<KeyLeaf>>(
 				lengthCapacity);
 		final ArrayList<ArrayList<KeyLeaf>> oldKeyList = new ArrayList<ArrayList<KeyLeaf>>(
@@ -166,16 +176,14 @@ public class KEA {
 					keyList.set(iMod, keyList.get(iMod + 1));
 					keyList.set(iMod + 1, new ArrayList<KeyLeaf>());
 				}
-				if (oneChild == w.getAccept()) {
+				if (oneChild == w.getAccept())
 					keyList.get(iMod).add(new KeyLeaf((short) row));
-				}
-				else if ((oneChild != w.getFail()) 
-						&& (oldKeyList.get(offset + scores[col][row]).size() != 0)) {
+				else if ((oneChild != w.getFail())
+						&& (oldKeyList.get(offset + scores[col][row]).size() != 0))
 					keyList.get(iMod).add(
 							new KeyLeaf((short) row, oldKeyList.get(offset
 									+ scores[col][row])));
-				}
-					
+
 			}
 			if ((row == 0) && (offset == 0))
 				for (int j = 0; j < capacity; j++)
@@ -184,10 +192,10 @@ public class KEA {
 		return keyList.get(0);
 	}
 
-	public long run() {
+	public long runEnumerate() {
 
 		long total = 0;
-		int flag = 0;
+		boolean flag = false;
 
 		for (int i = 0; i < capacitys.length; i++) {
 			final WorkBlock w = new WorkBlock();
@@ -206,7 +214,7 @@ public class KEA {
 			for (int j = 0; j < chunks; j++)
 				initKey.add((short) 0);
 			flag = buildKeys(keyList, initKey, key, chunks - 1, chunks);
-			if (flag == 1)
+			if (flag == true)
 				break;
 		}
 		return total;

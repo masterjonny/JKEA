@@ -50,6 +50,16 @@ public class Knapsack {
 		return total;
 	}
 	
+	public int calculateCapacityWithoutSort (short[] depths) {
+		if (depths.length != chunks)
+			throw new IllegalArgumentException("Incorrect number of depths");
+		int[] intDepths = new int[depths.length];
+		for(int i = 0; i < depths.length; i++) 
+			intDepths[i] = (int)depths[i];
+		
+		return this.calculateCapacityWithoutSort(intDepths);
+	}
+	
 	public void sortScore() {
 		for (int i = 0; i < chunks; i++)
 			data.get(i).sortScore();
@@ -57,7 +67,7 @@ public class Knapsack {
 
 	public void sortKeyChunk() {
 		for (int i = 0; i < chunks; i++)
-			data.get(i).sortScore();
+			data.get(i).sortKeyChunk();
 	}
 	
 	public int getChunks() {

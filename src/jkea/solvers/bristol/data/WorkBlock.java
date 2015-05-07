@@ -8,7 +8,7 @@ public class WorkBlock {
 	private int capacity;
 	private int fail;
 	private int length;
-	private ArrayList<Integer> paths;
+	private ArrayList<Long> paths;
 	private int wMin;
 
 	public WorkBlock() {
@@ -30,7 +30,7 @@ public class WorkBlock {
 		return length;
 	}
 
-	public ArrayList<Integer> getPaths() {
+	public ArrayList<Long> getPaths() {
 		return paths;
 	}
 
@@ -54,7 +54,7 @@ public class WorkBlock {
 		this.length = length;
 	}
 
-	public void setPaths(ArrayList<Integer> paths) {
+	public void setPaths(ArrayList<Long> paths) {
 		this.paths = paths;
 	}
 

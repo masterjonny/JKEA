@@ -1,4 +1,4 @@
-package jkea.runtime;
+package jkea.runtime.singlecore;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -6,37 +6,42 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import jkea.simulation.AttackFramework;
-import jkea.solvers.VeyratSolver;
+import jkea.solvers.KEASolver;
 
-public class VeyratRuntime {
+public class KEARuntime {
 
 	public static void main(String[] args) {
 
 		final int VARIANCE = 2;
 		final long NUMBERMESSAGES = 30;
-		final boolean EXPERIMENT_OUTPUT = true;
-		final int REPLICATE = 100000;
-
+		final int REPLICATE = 1000000;
+		
+		KEASolver k;
+		AttackFramework a;
+		
 		for (int i = 0; i < REPLICATE; i++) {
-			final AttackFramework a = new AttackFramework(VARIANCE);
+			a = new AttackFramework(VARIANCE);
 			a.runAttack(NUMBERMESSAGES);
 
 			final long startTime = System.currentTimeMillis();
-			final VeyratSolver v = new VeyratSolver(a.getPrior(), a.getKey());
-			final long rank = v.solve();
+			k = new KEASolver(a.getPrior(), a.getKey());
+			long actual = k.keyRank();
+			
+			System.out.println("ACTUAL: " + k.keyRank());
+			k.solve();
 			final long endTime = System.currentTimeMillis();
 
-			if (EXPERIMENT_OUTPUT) {
+			if (args.length == 1) {
 				try (PrintWriter out = new PrintWriter(new BufferedWriter(
 						new FileWriter(args[0], true)))) {
-					out.println(VARIANCE + "," + rank + ","
+					out.println(VARIANCE + "," + actual + ","
 							+ (endTime - startTime));
 				} catch (IOException e) {
 					// exception handling left as an exercise for the reader
 				}
-			} else {
-				System.out.println("KEY RANK: " + rank);
 			}
+			System.out.println(VARIANCE + "," + actual + ","
+					+ (endTime - startTime));
 		}
 	}
 
