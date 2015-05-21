@@ -2,6 +2,8 @@ package jkea.solvers;
 
 public interface SolverInterface {
 
-	long solve();
+	long rank();
+	long enumerateParallel(int nProcessors);
+	long enumerate();
 
 }

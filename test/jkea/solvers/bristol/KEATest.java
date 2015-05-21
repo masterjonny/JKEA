@@ -55,7 +55,7 @@ public class KEATest {
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 				1, 1, 1, 0, 0, 0 };
 		for (int i = 0; i < 63; i++) {
-			//assertEquals(solutions[i], paths.get(i));
+			assertEquals(solutions[i], (long)paths.get(i));
 		}
 	}
 

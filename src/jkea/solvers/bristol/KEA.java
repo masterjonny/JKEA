@@ -9,12 +9,17 @@ import jkea.solvers.bristol.data.WorkBlock;
 
 public class KEA {
 
-	private final Integer[] capacitys;
-	private final int chunks;
+	protected final Integer[] capacitys;
+	protected final int chunks;
 	private final Knapsack container;
-	private final short[] key;
-	private final int rows;
+	protected final short[] key;
+	protected final int rows;
 	private final int[][] scores;
+	private int graphWidth;
+
+	public int getGraphWidth() {
+		return graphWidth;
+	}
 
 	public KEA(int[][] data, short[] key) {
 		container = new Knapsack(data);
@@ -70,7 +75,8 @@ public class KEA {
 
 	public long keyRank() {
 		final WorkBlock w = new WorkBlock();
-		w.setCapacity(container.calculateCapacityWithoutSort(key));
+		graphWidth = container.calculateCapacityWithoutSort(key);
+		w.setCapacity(graphWidth);
 		w.setLength(((rows * w.getCapacity()) * chunks) + 2);
 		w.setFail(w.getLength() - 2);
 		w.setAccept(w.getLength() - 1);
@@ -109,7 +115,7 @@ public class KEA {
 		final ArrayList<Long> localCount = new ArrayList<Long>(length);
 		for (int i = 0; i < length; i++)
 			localCount.add((long) 0);
-		localCount.set(index, (long)1);
+		localCount.set(index, (long) 1);
 
 		for (int i = index - 1; i > -1; i--)
 			localCount.set(
@@ -125,18 +131,18 @@ public class KEA {
 		final ArrayList<Long> paths = new ArrayList<Long>(length);
 		for (int i = 0; i < length; i++)
 			paths.add((long) 0);
-		paths.set(0, (long)1);
+		paths.set(0, (long) 1);
 
 		for (int i = 0; i < chunks; i++)
 			for (int j = 0; j < capacity; j++) {
 				final int location = (i * rows * capacity) + (j * rows);
 				if (paths.get(location) == 1)
 					for (int k = 0; k < rows; k++) {
-						paths.set(location + k, (long)1);
-						paths.set(oneChild(w, location + k), (long)1);
+						paths.set(location + k, (long) 1);
+						paths.set(oneChild(w, location + k), (long) 1);
 					}
 			}
-		paths.set(length - 1, (long)pathCount(w, length - 1));
+		paths.set(length - 1, (long) pathCount(w, length - 1));
 		w.setPaths(paths);
 	}
 

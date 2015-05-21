@@ -15,7 +15,7 @@ public class VeyratSolver extends GenericSolver implements SolverInterface {
 	}
 
 	@Override
-	public long solve() {
+	public long enumerate() {
 		final TopEnum e = new TopEnum(scores);
 		boolean found = false;
 		long rank = 0;
@@ -32,5 +32,15 @@ public class VeyratSolver extends GenericSolver implements SolverInterface {
 		}
 		return rank;
 
+	}
+
+	@Override
+	public long enumerateParallel(int nProcessors) {
+		throw new UnsupportedOperationException("This solver does not support parallel enumeration");
+	}
+
+	@Override
+	public long rank() {
+		throw new UnsupportedOperationException("This solver does not support key ranking");
 	}
 }

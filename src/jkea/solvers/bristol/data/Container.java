@@ -55,7 +55,7 @@ class Container {
 	}
 
 	void sortKeyChunk() {
-		data.sort(new SortKeyComparator());
+		Collections.sort(data, new SortKeyComparator());
 	}
 
 	void sortScore() {
