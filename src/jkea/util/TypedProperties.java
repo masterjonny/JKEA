@@ -116,12 +116,14 @@ public class TypedProperties {
 		final StringBuilder sb = new StringBuilder();
 		final Class<?> type = array.getClass();
 
-		if (!type.isArray())
+		if (!type.isArray()) {
 			throw new IllegalArgumentException("not an array");
+		}
 
 		for (int i = 0; i < Array.getLength(array); i++) {
-			if (i > 0)
+			if (i > 0) {
 				sb.append(separator);
+			}
 
 			sb.append(Array.get(array, i));
 		}
@@ -165,10 +167,11 @@ public class TypedProperties {
 	public boolean getBoolean(String key, boolean defaultValue) {
 		final String value = getString(key, null);
 
-		if (value == null)
+		if (value == null) {
 			return defaultValue;
-		else
+		} else {
 			return Boolean.parseBoolean(value);
+		}
 	}
 
 	/**
@@ -189,10 +192,11 @@ public class TypedProperties {
 	public byte getByte(String key, byte defaultValue) {
 		final String value = getString(key, null);
 
-		if (value == null)
+		if (value == null) {
 			return defaultValue;
-		else
+		} else {
 			return Byte.parseByte(value);
+		}
 	}
 
 	/**
@@ -211,13 +215,14 @@ public class TypedProperties {
 	public byte[] getByteArray(String key, byte[] defaultValues) {
 		final String[] values = getStringArray(key, null);
 
-		if (values == null)
+		if (values == null) {
 			return defaultValues;
-		else {
+		} else {
 			final byte[] result = new byte[values.length];
 
-			for (int i = 0; i < values.length; i++)
+			for (int i = 0; i < values.length; i++) {
 				result[i] = Byte.parseByte(values[i]);
+			}
 
 			return result;
 		}
@@ -241,10 +246,11 @@ public class TypedProperties {
 	public double getDouble(String key, double defaultValue) {
 		final String value = getString(key, null);
 
-		if (value == null)
+		if (value == null) {
 			return defaultValue;
-		else
+		} else {
 			return Double.parseDouble(value);
+		}
 	}
 
 	/**
@@ -263,13 +269,14 @@ public class TypedProperties {
 	public double[] getDoubleArray(String key, double[] defaultValues) {
 		final String[] values = getStringArray(key, null);
 
-		if (values == null)
+		if (values == null) {
 			return defaultValues;
-		else {
+		} else {
 			final double[] result = new double[values.length];
 
-			for (int i = 0; i < values.length; i++)
+			for (int i = 0; i < values.length; i++) {
 				result[i] = Double.parseDouble(values[i]);
+			}
 
 			return result;
 		}
@@ -293,10 +300,11 @@ public class TypedProperties {
 	public float getFloat(String key, float defaultValue) {
 		final String value = getString(key, null);
 
-		if (value == null)
+		if (value == null) {
 			return defaultValue;
-		else
+		} else {
 			return Float.parseFloat(value);
+		}
 	}
 
 	/**
@@ -315,13 +323,14 @@ public class TypedProperties {
 	public float[] getFloatArray(String key, float[] defaultValues) {
 		final String[] values = getStringArray(key, null);
 
-		if (values == null)
+		if (values == null) {
 			return defaultValues;
-		else {
+		} else {
 			final float[] result = new float[values.length];
 
-			for (int i = 0; i < values.length; i++)
+			for (int i = 0; i < values.length; i++) {
 				result[i] = Float.parseFloat(values[i]);
+			}
 
 			return result;
 		}
@@ -345,10 +354,11 @@ public class TypedProperties {
 	public int getInt(String key, int defaultValue) {
 		final String value = getString(key, null);
 
-		if (value == null)
+		if (value == null) {
 			return defaultValue;
-		else
+		} else {
 			return Integer.parseInt(value);
+		}
 	}
 
 	/**
@@ -367,13 +377,14 @@ public class TypedProperties {
 	public int[] getIntArray(String key, int[] defaultValues) {
 		final String[] values = getStringArray(key, null);
 
-		if (values == null)
+		if (values == null) {
 			return defaultValues;
-		else {
+		} else {
 			final int[] result = new int[values.length];
 
-			for (int i = 0; i < values.length; i++)
+			for (int i = 0; i < values.length; i++) {
 				result[i] = Integer.parseInt(values[i]);
+			}
 
 			return result;
 		}
@@ -397,10 +408,11 @@ public class TypedProperties {
 	public long getLong(String key, long defaultValue) {
 		final String value = getString(key, null);
 
-		if (value == null)
+		if (value == null) {
 			return defaultValue;
-		else
+		} else {
 			return Long.parseLong(value);
+		}
 	}
 
 	/**
@@ -419,13 +431,14 @@ public class TypedProperties {
 	public long[] getLongArray(String key, long[] defaultValues) {
 		final String[] values = getStringArray(key, null);
 
-		if (values == null)
+		if (values == null) {
 			return defaultValues;
-		else {
+		} else {
 			final long[] result = new long[values.length];
 
-			for (int i = 0; i < values.length; i++)
+			for (int i = 0; i < values.length; i++) {
 				result[i] = Long.parseLong(values[i]);
+			}
 
 			return result;
 		}
@@ -460,10 +473,11 @@ public class TypedProperties {
 	public short getShort(String key, short defaultValue) {
 		final String value = getString(key, null);
 
-		if (value == null)
+		if (value == null) {
 			return defaultValue;
-		else
+		} else {
 			return Short.parseShort(value);
+		}
 	}
 
 	/**
@@ -482,13 +496,14 @@ public class TypedProperties {
 	public short[] getShortArray(String key, short[] defaultValues) {
 		final String[] values = getStringArray(key, null);
 
-		if (values == null)
+		if (values == null) {
 			return defaultValues;
-		else {
+		} else {
 			final short[] result = new short[values.length];
 
-			for (int i = 0; i < values.length; i++)
+			for (int i = 0; i < values.length; i++) {
 				result[i] = Short.parseShort(values[i]);
+			}
 
 			return result;
 		}
@@ -509,10 +524,11 @@ public class TypedProperties {
 	public String getString(String key, String defaultValue) {
 		final String value = properties.getProperty(key);
 
-		if (value == null)
+		if (value == null) {
 			return defaultValue;
-		else
+		} else {
 			return value;
+		}
 	}
 
 	/**
@@ -531,15 +547,16 @@ public class TypedProperties {
 	public String[] getStringArray(String key, String[] defaultValues) {
 		final String value = getString(key, null);
 
-		if (value == null)
+		if (value == null) {
 			return defaultValues;
-		else if (value.isEmpty())
+		} else if (value.isEmpty()) {
 			return new String[0];
-		else {
+		} else {
 			final String[] tokens = value.split(separator, -1);
 
-			for (int i = 0; i < tokens.length; i++)
+			for (int i = 0; i < tokens.length; i++) {
 				tokens[i] = tokens[i].trim();
+			}
 
 			return tokens;
 		}

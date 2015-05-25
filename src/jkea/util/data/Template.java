@@ -1,6 +1,6 @@
 package jkea.util.data;
 
-public interface LeakPoint {
+public interface Template {
 
 	public double leak(short transition);
 

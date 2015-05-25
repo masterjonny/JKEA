@@ -2,7 +2,7 @@ package jkea.util.data;
 
 import java.util.Random;
 
-public class HammingTemplate implements LeakPoint {
+public class HammingTemplate implements Template {
 
 	private double norm;
 	private final Random numberStream;

@@ -3,7 +3,7 @@ package jkea.core.spi;
 import java.nio.file.ProviderNotFoundException;
 import java.util.Properties;
 
-import jkea.core.Attack;
+import jkea.core.Simulator;
 import jkea.core.Solver;
 
 /**
@@ -47,11 +47,11 @@ public abstract class SolverProvider {
 	 * @param properties
 	 *            optional properties for the solver
 	 * @param attack
-	 *            the attack traces
+	 *            the attack data to be processed
 	 * @return the solver with the specified name, or {@code null} if this
 	 *         provider does not support the solver
 	 */
 	public abstract Solver getSolver(String name, Properties properties,
-			Attack attack);
+			Simulator attack);
 
 }

@@ -1,5 +1,9 @@
 package jkea.core;
 
+/**
+ * Global settings used by this framework.
+ *
+ */
 public class Settings {
 
 	/**

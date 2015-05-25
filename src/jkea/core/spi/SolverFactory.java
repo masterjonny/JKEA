@@ -5,7 +5,7 @@ import java.util.Properties;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
-import jkea.core.Attack;
+import jkea.core.Simulator;
 import jkea.core.Solver;
 import jkea.core.solver.StandardSolvers;
 
@@ -79,23 +79,25 @@ public class SolverFactory {
 	 *             if no provider for the solver is available
 	 */
 	public synchronized Solver getSolver(String name, Properties properties,
-			Attack attack) {
+			Simulator attack) {
 		final Iterator<SolverProvider> ps = PROVIDERS.iterator();
 
 		if (!ps.hasNext()) {
 			final Solver solver = instansiateSolver(new StandardSolvers(),
 					name, properties, attack);
 
-			if (solver != null)
+			if (solver != null) {
 				return solver;
+			}
 		}
 
 		while (ps.hasNext()) {
 			final Solver solver = instansiateSolver(ps.next(), name,
 					properties, attack);
 
-			if (solver != null)
+			if (solver != null) {
 				return solver;
+			}
 		}
 
 		throw new ProviderNotFoundException(name);
@@ -116,7 +118,7 @@ public class SolverFactory {
 	 *         {@code null} if the provider does not implement the solver
 	 */
 	private Solver instansiateSolver(SolverProvider provider, String name,
-			Properties properties, Attack attack) {
+			Properties properties, Simulator attack) {
 		try {
 			return provider.getSolver(name, properties, attack);
 		} catch (final ServiceConfigurationError e) {

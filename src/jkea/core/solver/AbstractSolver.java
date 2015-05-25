@@ -1,19 +1,18 @@
 package jkea.core.solver;
 
-import jkea.core.Attack;
+import jkea.core.Simulator;
 import jkea.core.Solver;
 
 /**
  * Abstract class providing default implementations for several {@link Solver}
  * methods.
  */
-
 public abstract class AbstractSolver implements Solver {
 
 	/**
 	 * The attack being processed.
 	 */
-	protected final Attack attack;
+	protected final Simulator attack;
 
 	/**
 	 * {@code true} if the {@link #initialise()} method has been invoked;
@@ -22,18 +21,39 @@ public abstract class AbstractSolver implements Solver {
 	protected boolean initialised;
 
 	/**
+	 * The known secret key which the solver is attempting to retrieve.
+	 */
+	protected short[] key;
+	
+	/**
+	 * The distinguishing vectors provided to this solver to process
+	 */
+	protected double[][] scores;
+	
+	/**
 	 * Constructs an abstract solver for solving the specified attack.
 	 *
-	 * @param problem
+	 * @param attack
 	 *            the attack being processed
 	 */
-	public AbstractSolver(Attack attack) {
+	public AbstractSolver(Simulator attack) {
 		super();
 		this.attack = attack;
+		this.scores = attack.getVectors();
+		key = attack.getKey();
 	}
 
 	@Override
-	public Attack getAttack() {
+	public long enumerate() {
+		if (!isInitialized()) {
+			initialise();
+		}
+
+		return runEnumerate();
+	}
+
+	@Override
+	public Simulator getAttack() {
 		return attack;
 	}
 
@@ -42,13 +62,14 @@ public abstract class AbstractSolver implements Solver {
 	 * Implementations should always invoke {@code super.initialize()} to ensure
 	 * the hierarchy is initialised correctly.
 	 *
-	 * @throws SolverInitializationException
+	 * @throws SolverInitialisationException
 	 *             if the solver has already been initialised
 	 */
 	protected void initialise() {
-		if (initialised)
+		if (initialised) {
 			throw new SolverInitialisationException(this,
 					"solver already initialized");
+		}
 
 		initialised = true;
 	}
@@ -63,4 +84,41 @@ public abstract class AbstractSolver implements Solver {
 	public boolean isInitialized() {
 		return initialised;
 	}
+
+	@Override
+	public long rank() {
+		if (!isInitialized()) {
+			initialise();
+		}
+
+		return runRank();
+	}
+
+	/**
+	 * After all wrapping calls prior to the rank operation have been performed,
+	 * call the core of the algorithm to perform the enumeration operation.
+	 *
+	 * @return The rank of the key within the search space
+	 * @throws SolverException
+	 *             if the solver does not provide and implementation for
+	 *             enumeration
+	 */
+	protected long runEnumerate() {
+		throw new SolverException(this,
+				"This solver does not support this opperation");
+	}
+
+	/**
+	 * After all wrapping calls prior to the rank operation have been performed,
+	 * call the core of the algorithm to perform the ranking operation.
+	 *
+	 * @return The rank of the key within the search space
+	 * @throws SolverException
+	 *             if the solver does not provide and implementation for ranking
+	 */
+	protected long runRank() {
+		throw new SolverException(this,
+				"This solver does not support this opperation");
+	}
+
 }
