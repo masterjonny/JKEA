@@ -76,10 +76,10 @@ public class SimulatorFactory {
 	 */
 	public synchronized Simulator getSimulator(String name,
 			Properties properties) {
-		final Iterator<SimulatorProvider> ps = PROVIDERS.iterator();
+		Iterator<SimulatorProvider> ps = PROVIDERS.iterator();
 
 		if (!ps.hasNext()) {
-			final Simulator simulator = instansiateSimulator(
+			Simulator simulator = instansiateSimulator(
 					new StandardSimulators(), name, properties);
 
 			if (simulator != null) {
@@ -88,7 +88,7 @@ public class SimulatorFactory {
 		}
 
 		while (ps.hasNext()) {
-			final Simulator simulator = instansiateSimulator(ps.next(), name,
+			Simulator simulator = instansiateSimulator(ps.next(), name,
 					properties);
 
 			if (simulator != null) {
@@ -115,7 +115,7 @@ public class SimulatorFactory {
 			String name, Properties properties) {
 		try {
 			return provider.getSimulator(name, properties);
-		} catch (final ServiceConfigurationError e) {
+		} catch (ServiceConfigurationError e) {
 			System.err.println(e.getMessage());
 		}
 

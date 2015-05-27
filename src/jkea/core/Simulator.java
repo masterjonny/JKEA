@@ -56,6 +56,8 @@ public interface Simulator {
 	 *
 	 */
 	public void runAttack();
+	
+	public void runAdditionalTrace(int nTraces);
 
 	/**
 	 * Sets the distinguisher used to process this simulated data.

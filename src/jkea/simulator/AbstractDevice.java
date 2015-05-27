@@ -3,7 +3,7 @@ package jkea.simulator;
 import java.util.ArrayList;
 
 import jkea.util.cipher.Cipher;
-import jkea.util.data.Template;
+import jkea.util.data.template.Template;
 
 /**
  * Abstract class providing basic functionality of device simulators, for
@@ -30,7 +30,7 @@ public abstract class AbstractDevice {
 	/**
 	 * The templates constructed to perform the side channel attack.
 	 */
-	private final ArrayList<Template> templates;
+	private ArrayList<Template> templates;
 
 	/**
 	 * Construct a new device for simulating attacks.
@@ -40,7 +40,7 @@ public abstract class AbstractDevice {
 	 * @param cipher
 	 *            the cipher which the simulate device is using
 	 */
-	AbstractDevice(final ArrayList<Template> templates, Cipher cipher) {
+	AbstractDevice(ArrayList<Template> templates, Cipher cipher) {
 		this.cipher = cipher;
 		this.templates = templates;
 		newKey();
@@ -52,7 +52,7 @@ public abstract class AbstractDevice {
 	 *
 	 * @return the known secret key.
 	 */
-	final short[] getKey() {
+	short[] getKey() {
 		return key;
 	}
 
@@ -61,7 +61,7 @@ public abstract class AbstractDevice {
 	 *
 	 * @return the known plain text of the simulated device
 	 */
-	final short[] getPlain() {
+	short[] getPlain() {
 		return plain;
 	}
 
@@ -70,9 +70,9 @@ public abstract class AbstractDevice {
 	 *
 	 * @return a trace of leakage simulated from the device
 	 */
-	final double[] getTrace() {
-		final short[] output = cipher.predict(plain, key);
-		final double[] leakage = new double[templates.size()];
+	double[] getTrace() {
+		short[] output = cipher.encrypt(plain, key);
+		double[] leakage = new double[templates.size()];
 		for (int i = 0; i < templates.size(); i++) {
 			leakage[i] = templates.get(i).leak(output[i]);
 		}

@@ -80,10 +80,10 @@ public class SolverFactory {
 	 */
 	public synchronized Solver getSolver(String name, Properties properties,
 			Simulator attack) {
-		final Iterator<SolverProvider> ps = PROVIDERS.iterator();
+		Iterator<SolverProvider> ps = PROVIDERS.iterator();
 
 		if (!ps.hasNext()) {
-			final Solver solver = instansiateSolver(new StandardSolvers(),
+			Solver solver = instansiateSolver(new StandardSolvers(),
 					name, properties, attack);
 
 			if (solver != null) {
@@ -92,7 +92,7 @@ public class SolverFactory {
 		}
 
 		while (ps.hasNext()) {
-			final Solver solver = instansiateSolver(ps.next(), name,
+			Solver solver = instansiateSolver(ps.next(), name,
 					properties, attack);
 
 			if (solver != null) {
@@ -121,7 +121,7 @@ public class SolverFactory {
 			Properties properties, Simulator attack) {
 		try {
 			return provider.getSolver(name, properties, attack);
-		} catch (final ServiceConfigurationError e) {
+		} catch (ServiceConfigurationError e) {
 			System.err.println(e.getMessage());
 		}
 

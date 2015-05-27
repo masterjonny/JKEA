@@ -3,8 +3,8 @@ package jkea.simulator;
 import java.util.ArrayList;
 
 import jkea.util.cipher.AES;
-import jkea.util.data.HammingTemplate;
-import jkea.util.data.Template;
+import jkea.util.data.template.HammingTemplate;
+import jkea.util.data.template.Template;
 
 /**
  * Implementation of a simulator that creates an AES device and leaks hamming
@@ -22,10 +22,15 @@ public class AESHammingWeight extends AbstractSimulator {
 		 * Construct a new AES device.
 		 *
 		 * @param templates
-		 *            hamming weights used in this device.
+		 *            hamming weights used in this device
+		 * @param blockLength
+		 *            the length of the AES cipher block
+		 * @param keyRange
+		 *            the maximum key value for chunks of this AES device
 		 */
-		AESDevice(final ArrayList<Template> templates) {
-			super(templates, new AES());
+		AESDevice(ArrayList<Template> templates, int blockLength,
+				int keyRange) {
+			super(templates, new AES(blockLength, keyRange));
 		}
 	}
 
@@ -55,7 +60,7 @@ public class AESHammingWeight extends AbstractSimulator {
 	 *            number of traces to simulate
 	 * @param variance
 	 *            the amount of noise present in the simulated data
-	 * @param numberOfVectors
+	 * @param nVectors
 	 *            the number of distinguishing vectors
 	 * @param vectorLength
 	 *            the length of each distinguishing vector
@@ -67,7 +72,7 @@ public class AESHammingWeight extends AbstractSimulator {
 			leakData.add(new HammingTemplate(variance));
 		}
 
-		device = new AESDevice(leakData);
+		device = new AESDevice(leakData, nVectors, vectorLength);
 		key = device.getKey();
 	}
 
@@ -78,17 +83,22 @@ public class AESHammingWeight extends AbstractSimulator {
 
 	@Override
 	public void runAttack() {
-		final AES c = new AES();
 		for (int i = 0; i < numberOfVectors; i++) {
 			for (int j = 0; j < vectorLength; j++) {
 				vectors[i][j] = 1. / vectorLength;
 			}
 		}
 
+		runAdditionalTrace(nTraces);
+	}
+	
+	@Override
+	public void runAdditionalTrace(int nTraces) {
+		final AES c = new AES(numberOfVectors, vectorLength);
 		for (long i = 0; i < nTraces; i++) {
 			device.newPlain();
-			final short[] plain = device.getPlain();
-			final double[] trace = device.getTrace();
+			short[] plain = device.getPlain();
+			double[] trace = device.getTrace();
 			vectors = distinguisher.updatePrior(vectors, plain, trace, c,
 					leakData);
 		}

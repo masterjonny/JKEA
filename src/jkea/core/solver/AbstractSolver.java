@@ -24,12 +24,12 @@ public abstract class AbstractSolver implements Solver {
 	 * The known secret key which the solver is attempting to retrieve.
 	 */
 	protected short[] key;
-	
+
 	/**
 	 * The distinguishing vectors provided to this solver to process
 	 */
 	protected double[][] scores;
-	
+
 	/**
 	 * Constructs an abstract solver for solving the specified attack.
 	 *
@@ -39,7 +39,7 @@ public abstract class AbstractSolver implements Solver {
 	public AbstractSolver(Simulator attack) {
 		super();
 		this.attack = attack;
-		this.scores = attack.getVectors();
+		scores = attack.getVectors();
 		key = attack.getKey();
 	}
 
@@ -70,7 +70,7 @@ public abstract class AbstractSolver implements Solver {
 			throw new SolverInitialisationException(this,
 					"solver already initialized");
 		}
-
+	
 		initialised = true;
 	}
 
