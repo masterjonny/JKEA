@@ -1,5 +1,6 @@
 package jkea.util.data.kea;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class WorkBlock {
@@ -8,8 +9,9 @@ public class WorkBlock {
 	private int capacity;
 	private int fail;
 	private int length;
-	private ArrayList<Long> paths;
+	private ArrayList<BigDecimal> paths;
 	private int wMin;
+	private BigDecimal pathCount;
 
 	public WorkBlock() {
 	}
@@ -30,7 +32,11 @@ public class WorkBlock {
 		return length;
 	}
 
-	public ArrayList<Long> getPaths() {
+	public BigDecimal getPathCount() {
+		return pathCount;
+	}
+
+	public ArrayList<BigDecimal> getPaths() {
 		return paths;
 	}
 
@@ -54,7 +60,11 @@ public class WorkBlock {
 		this.length = length;
 	}
 
-	public void setPaths(ArrayList<Long> paths) {
+	public void setPathCount(BigDecimal pathCount) {
+		this.pathCount = pathCount;
+	}
+
+	public void setPaths(ArrayList<BigDecimal> paths) {
 		this.paths = paths;
 	}
 

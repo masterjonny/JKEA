@@ -1,5 +1,6 @@
 package jkea.core.solver;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import jkea.core.Simulator;
@@ -32,7 +33,7 @@ public class Glowacz extends AbstractSolver {
 		 * Array containing the count of the number of elements stored in each
 		 * bin.
 		 */
-		private int[] data;
+		private BigDecimal[] data;
 
 		/**
 		 * Constructs a new histogram.
@@ -43,9 +44,9 @@ public class Glowacz extends AbstractSolver {
 		 *            the size of each bin within the histogram
 		 */
 		public Histogram(int nBins, double binSize) {
-			data = new int[nBins];
+			data = new BigDecimal[nBins];
 			for (int i = 0; i < nBins; i++) {
-				data[i] = 0;
+				data[i] = new BigDecimal(0);
 			}
 			this.binSize = binSize;
 		}
@@ -61,7 +62,7 @@ public class Glowacz extends AbstractSolver {
 			if (binID == data.length) {
 				binID--;
 			}
-			data[binID]++;
+			data[binID].add(new BigDecimal(1));
 		}
 
 		/**
@@ -71,7 +72,7 @@ public class Glowacz extends AbstractSolver {
 		 *            index of the bin whose value we wish to retrieve
 		 * @return value contained in the specified bin
 		 */
-		public int getBin(int id) {
+		public BigDecimal getBin(int id) {
 			return data[id];
 		}
 
@@ -101,7 +102,7 @@ public class Glowacz extends AbstractSolver {
 		 * @param binID
 		 *            index of the bin to which the value is to be assigned
 		 */
-		public void set(int val, int binID) {
+		public void set(BigDecimal val, int binID) {
 			data[binID] = val;
 		}
 
@@ -148,29 +149,22 @@ public class Glowacz extends AbstractSolver {
 	 * @return the new histogram which is a convolotion of the two inputs
 	 */
 	protected Histogram convolve(Histogram sig, Histogram kern) {
-		Histogram res = new Histogram(
-				(sig.getNBins() + kern.getNBins()) - 1, sig.getBinSize());
+		Histogram res = new Histogram((sig.getNBins() + kern.getNBins()) - 1,
+				sig.getBinSize());
 
 		for (int n = 0; n < res.getNBins(); n++) {
-			int kMin = (n >= (kern.getNBins() - 1)) ? n
-					- (kern.getNBins() - 1) : 0;
-			int kMax = (n < (sig.getNBins() - 1)) ? n
-					: sig.getNBins() - 1;
+			int kMin = (n >= (kern.getNBins() - 1)) ? n - (kern.getNBins() - 1)
+					: 0;
+					int kMax = (n < (sig.getNBins() - 1)) ? n : sig.getNBins() - 1;
 
-			res.set(0, n);
+					res.set(new BigDecimal(0), n);
 
-			for (int k = kMin; k <= kMax; k++) {
-				res.set(res.getBin(n) + (sig.getBin(k) * kern.getBin(n - k)), n);
-			}
+					for (int k = kMin; k <= kMax; k++) {
+						res.set(res.getBin(n).add((sig.getBin(k).multiply(kern.getBin(n - k)))), n);
+					}
 
 		}
 		return res;
-	}
-
-	@Override
-	public long enumerate() {
-		throw new SolverException(this,
-				"This solver does not support this opperation");
 	}
 
 	@Override
@@ -198,16 +192,16 @@ public class Glowacz extends AbstractSolver {
 	}
 
 	@Override
-	public long runRank() {
+	public BigDecimal runRank() {
 		Histogram curr = hists.get(0);
 		int keyPosFinal = keyLocations[0];
 		for (int i = 1; i < scores.length; i++) {
 			curr = convolve(curr, hists.get(i));
 			keyPosFinal += keyLocations[i];
 		}
-		int rank = 0;
+		BigDecimal rank = new BigDecimal(0);
 		for (int i = keyPosFinal; i < curr.getNBins(); i++) {
-			rank += curr.getBin(i);
+			rank.add(curr.getBin(i));
 		}
 		return rank;
 	}

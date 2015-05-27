@@ -1,5 +1,6 @@
 package jkea.core.solver;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -26,30 +27,6 @@ public class KEA extends AbstractSolver {
 		chunks = attack.getNumberOfVectors();
 		key = attack.getKey();
 		this.precision = precision;
-	}
-
-	@Override
-	public void initialise() {
-		int globalMax = 0;
-		intScores = new int[scores.length][scores[0].length];
-		
-		for (int i = 0; i < scores.length; ++i) {
-			for (int j = 0; j < scores[0].length; ++j) {
-				intScores[i][j] = (int) Math.abs(scores[i][j]);
-				globalMax = Math.max(globalMax, intScores[i][j]);
-			}
-		}
-		
-		double alpha = Math.log(globalMax) / Math.log(2);
-		
-		for (int i = 0; i < scores.length; ++i) {
-			for (int j = 0; j < scores[0].length; ++j) {
-				intScores[i][j] = (int) Math.abs(scores[i][j] * Math.pow(2, precision - alpha));
-			}
-		}
-		
-		container = new Knapsack(intScores);
-		capacitys = calculateCapacitys();
 	}
 
 	public boolean buildKeys(ArrayList<KeyLeaf> keys, ArrayList<Short> initKey,
@@ -106,15 +83,28 @@ public class KEA extends AbstractSolver {
 	}
 
 	@Override
-	public long runRank() {
-		WorkBlock w = new WorkBlock();
-		graphWidth = container.calculateCapacityWithoutSort(key);
-		w.setCapacity(graphWidth);
-		w.setLength(((rows * w.getCapacity()) * chunks) + 2);
-		w.setFail(w.getLength() - 2);
-		w.setAccept(w.getLength() - 1);
-		pathCountLoop(w);
-		return w.getPaths().get(w.getAccept());
+	public void initialise() {
+		int globalMax = 0;
+		intScores = new int[scores.length][scores[0].length];
+
+		for (int i = 0; i < scores.length; ++i) {
+			for (int j = 0; j < scores[0].length; ++j) {
+				intScores[i][j] = (int) Math.abs(scores[i][j]);
+				globalMax = Math.max(globalMax, intScores[i][j]);
+			}
+		}
+
+		double alpha = Math.log(globalMax) / Math.log(2);
+
+		for (int i = 0; i < scores.length; ++i) {
+			for (int j = 0; j < scores[0].length; ++j) {
+				intScores[i][j] = (int) Math.abs(scores[i][j]
+						* Math.pow(2, precision - alpha));
+			}
+		}
+
+		container = new Knapsack(intScores);
+		capacitys = calculateCapacitys();
 	}
 
 	int oneChild(WorkBlock w, int i) {
@@ -133,7 +123,7 @@ public class KEA extends AbstractSolver {
 		int row = i % rows;
 		int offset = ((i - row) % (rows * capacity)) / rows;
 		int col = (i - row - (offset * rows)) / (rows * capacity);
-		if ((offset + scores[col][row]) >= capacity) {
+		if ((offset + intScores[col][row]) >= capacity) {
 			return fail;
 		} else if (col == (chunks - 1)) {
 			if ((offset + intScores[col][row]) >= wMin) {
@@ -147,44 +137,47 @@ public class KEA extends AbstractSolver {
 		}
 	}
 
-	private long pathCount(WorkBlock w, int index) {
+	private BigDecimal pathCount(WorkBlock w, int index) {
 		int length = w.getLength();
-		ArrayList<Long> localCount = new ArrayList<Long>(length);
+		ArrayList<BigDecimal> localCount = new ArrayList<BigDecimal>(length);
 		for (int i = 0; i < length; i++) {
-			localCount.add((long) 0);
+			localCount.add(new BigDecimal(0));
 		}
-		localCount.set(index, (long) 1);
+		localCount.set(index, new BigDecimal(1));
 
 		for (int i = index - 1; i > -1; i--) {
 			localCount.set(
 					i,
-					localCount.get(zeroChild(w, i))
-							+ localCount.get(oneChild(w, i)));
+					localCount.get(zeroChild(w, i)).add(
+					localCount.get(oneChild(w, i))));
 		}
+		
 		return localCount.get(0);
 	}
 
 	void pathCountLoop(WorkBlock w) {
 		int capacity = w.getCapacity();
 		int length = w.getLength();
-		ArrayList<Long> paths = new ArrayList<Long>(length);
+		ArrayList<BigDecimal> paths = new ArrayList<BigDecimal>(length);
 		for (int i = 0; i < length; i++) {
-			paths.add((long) 0);
+			paths.add(new BigDecimal(0));
 		}
-		paths.set(0, (long) 1);
+		paths.set(0, new BigDecimal(1));
 
+		BigDecimal one = new BigDecimal(1);
+		
 		for (int i = 0; i < chunks; i++) {
 			for (int j = 0; j < capacity; j++) {
 				int location = (i * rows * capacity) + (j * rows);
-				if (paths.get(location) == 1) {
+				if (paths.get(location).equals(one)) {
 					for (int k = 0; k < rows; k++) {
-						paths.set(location + k, (long) 1);
-						paths.set(oneChild(w, location + k), (long) 1);
+						paths.set(location + k, new BigDecimal(1));
+						paths.set(oneChild(w, location + k), new BigDecimal(1));
 					}
 				}
 			}
 		}
-		paths.set(length - 1, pathCount(w, length - 1));
+		w.setPathCount(pathCount(w, length - 1));
 		w.setPaths(paths);
 	}
 
@@ -192,7 +185,7 @@ public class KEA extends AbstractSolver {
 		int capacity = w.getCapacity();
 		int lengthCapacity = rows * capacity;
 		int length = w.getLength();
-		ArrayList<Long> paths = w.getPaths();
+		ArrayList<BigDecimal> paths = w.getPaths();
 
 		int offset;
 		int row;
@@ -213,11 +206,13 @@ public class KEA extends AbstractSolver {
 			oldKeyList.add(new ArrayList<KeyLeaf>());
 		}
 
+		BigDecimal zero = new BigDecimal(0);
+		
 		for (int i = length - 3; i > -1; i--) {
 			row = i % rows;
 			offset = ((i - row) % (rows * capacity)) / rows;
 			col = (i - row - (offset * rows)) / (rows * capacity);
-			if (paths.get(i) != 0) {
+			if (!paths.get(i).equals(zero)) {
 				iMod = i % lengthCapacity;
 				zeroChild = zeroChild(w, i);
 				oneChild = oneChild(w, i);
@@ -246,9 +241,9 @@ public class KEA extends AbstractSolver {
 	}
 
 	@Override
-	public long runEnumerate() {
+	public BigDecimal runEnumerate() {
 
-		long total = 0;
+		BigDecimal total = new BigDecimal(0);
 		boolean flag = false;
 
 		for (int i = 0; i < capacitys.length; i++) {
@@ -263,7 +258,7 @@ public class KEA extends AbstractSolver {
 			w.setFail(w.getLength() - 2);
 			w.setAccept(w.getLength() - 1);
 			pathCountLoop(w);
-			total += w.getPaths().get(w.getAccept());
+			total.add(w.getPathCount());
 			ArrayList<KeyLeaf> keyList = pathEnumerate(w);
 			ArrayList<Short> initKey = new ArrayList<Short>(chunks);
 			for (int j = 0; j < chunks; j++) {
@@ -275,6 +270,18 @@ public class KEA extends AbstractSolver {
 			}
 		}
 		return total;
+	}
+
+	@Override
+	public BigDecimal runRank() {
+		WorkBlock w = new WorkBlock();
+		graphWidth = container.calculateCapacityWithoutSort(key);
+		w.setCapacity(graphWidth);
+		w.setLength(((rows * w.getCapacity()) * chunks) + 2);
+		w.setFail(w.getLength() - 2);
+		w.setAccept(w.getLength() - 1);
+		pathCountLoop(w);
+		return w.getPathCount();
 	}
 
 	int zeroChild(WorkBlock w, int i) {

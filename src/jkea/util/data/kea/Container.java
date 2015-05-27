@@ -30,7 +30,7 @@ public class Container {
 	 * scores.
 	 */
 	private class SortScoreComparator implements
-			Comparator<Pair<Short, Integer>> {
+	Comparator<Pair<Short, Integer>> {
 
 		@Override
 		public int compare(Pair<Short, Integer> arg0, Pair<Short, Integer> arg1) {

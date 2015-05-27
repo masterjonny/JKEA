@@ -83,8 +83,8 @@ public class SolverFactory {
 		Iterator<SolverProvider> ps = PROVIDERS.iterator();
 
 		if (!ps.hasNext()) {
-			Solver solver = instansiateSolver(new StandardSolvers(),
-					name, properties, attack);
+			Solver solver = instansiateSolver(new StandardSolvers(), name,
+					properties, attack);
 
 			if (solver != null) {
 				return solver;
@@ -92,8 +92,8 @@ public class SolverFactory {
 		}
 
 		while (ps.hasNext()) {
-			Solver solver = instansiateSolver(ps.next(), name,
-					properties, attack);
+			Solver solver = instansiateSolver(ps.next(), name, properties,
+					attack);
 
 			if (solver != null) {
 				return solver;

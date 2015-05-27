@@ -2,6 +2,8 @@ package jkea.util.data.kea;
 
 import java.util.ArrayList;
 
+import jkea.core.solver.KEA;
+
 /**
  * A node within the key tree used by {@link KEA} to enumerate the keys. Each
  * node contains a list to its children, as well as a boolean denoting if these
@@ -51,7 +53,7 @@ public class KeyLeaf {
 
 	/**
 	 * Get the key chunk of this node.
-	 * 
+	 *
 	 * @return the key chunk this node is storing
 	 */
 	public short getKeyChunk() {
@@ -70,7 +72,7 @@ public class KeyLeaf {
 	/**
 	 * Checks if this node has children. {@code true} is returned if it does and
 	 * {@code false} if not.
-	 * 
+	 *
 	 * @return a boolean denoting if this not has children
 	 */
 	public boolean hasList() {

@@ -1,5 +1,7 @@
 package jkea.core.solver;
 
+import java.math.BigDecimal;
+
 import jkea.core.Simulator;
 import jkea.core.Solver;
 
@@ -44,7 +46,7 @@ public abstract class AbstractSolver implements Solver {
 	}
 
 	@Override
-	public long enumerate() {
+	public BigDecimal enumerate() {
 		if (!isInitialized()) {
 			initialise();
 		}
@@ -70,7 +72,7 @@ public abstract class AbstractSolver implements Solver {
 			throw new SolverInitialisationException(this,
 					"solver already initialized");
 		}
-	
+
 		initialised = true;
 	}
 
@@ -86,7 +88,7 @@ public abstract class AbstractSolver implements Solver {
 	}
 
 	@Override
-	public long rank() {
+	public BigDecimal rank() {
 		if (!isInitialized()) {
 			initialise();
 		}
@@ -103,7 +105,7 @@ public abstract class AbstractSolver implements Solver {
 	 *             if the solver does not provide and implementation for
 	 *             enumeration
 	 */
-	protected long runEnumerate() {
+	protected BigDecimal runEnumerate() {
 		throw new SolverException(this,
 				"This solver does not support this opperation");
 	}
@@ -116,7 +118,7 @@ public abstract class AbstractSolver implements Solver {
 	 * @throws SolverException
 	 *             if the solver does not provide and implementation for ranking
 	 */
-	protected long runRank() {
+	protected BigDecimal runRank() {
 		throw new SolverException(this,
 				"This solver does not support this opperation");
 	}

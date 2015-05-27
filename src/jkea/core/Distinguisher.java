@@ -32,7 +32,7 @@ public interface Distinguisher {
 	 * @return an updated set of distinguishing vectors
 	 *
 	 */
-	double[][] updatePrior(double[][] prior, short[] plain,
-			double[] trace, Cipher cipher, ArrayList<Template> templates);
+	double[][] updatePrior(double[][] prior, short[] plain, double[] trace,
+			Cipher cipher, ArrayList<Template> templates);
 
 }

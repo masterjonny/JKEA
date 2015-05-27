@@ -35,8 +35,9 @@ public class PMF {
 	public PMF(ArrayList<Double> pDistribution) {
 		mDistribution = new ArrayList<PMFOutcome>(pDistribution.size());
 		short index = 0;
-		for (Double val : pDistribution)
+		for (Double val : pDistribution) {
 			mDistribution.add(new PMFOutcome(index++, val));
+		}
 		Collections.sort(mDistribution);
 	}
 

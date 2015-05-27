@@ -1,5 +1,7 @@
 package jkea.core;
 
+import java.math.BigDecimal;
+
 import jkea.core.solver.SolverException;
 
 /**
@@ -18,7 +20,7 @@ public interface Solver {
 	 *
 	 * @return the key rank of the key in the search space
 	 */
-	public long enumerate();
+	public BigDecimal enumerate();
 
 	/**
 	 * Returns the attack being processed by this solver.
@@ -32,6 +34,6 @@ public interface Solver {
 	 *
 	 * @return the key rank of the key in the search space
 	 */
-	public long rank();
+	public BigDecimal rank();
 
 }

@@ -1,5 +1,6 @@
 package jkea;
 
+import java.math.BigDecimal;
 import java.util.Properties;
 
 import jkea.core.Distinguisher;
@@ -82,7 +83,7 @@ public class Executor {
 	 *
 	 * @return the number of keys enumerated before the correct key was located
 	 */
-	public long enumerate() {
+	public BigDecimal enumerate() {
 		return run(1);
 	}
 
@@ -91,7 +92,7 @@ public class Executor {
 	 *
 	 * @return the estimated rank of the key within the search space
 	 */
-	public long rank() {
+	public BigDecimal rank() {
 		return run(0);
 	}
 
@@ -105,7 +106,7 @@ public class Executor {
 	 * @return the estiamted rank of the key or the number of keys enumerated
 	 *         depending on execution mode
 	 */
-	protected long run(int executionMode) {
+	protected BigDecimal run(int executionMode) {
 		if (solverName == null) {
 			throw new IllegalArgumentException("no solver specified");
 		}

@@ -5,7 +5,7 @@ package jkea.util.cipher;
  */
 public class AES extends AbstractCipher {
 
-	/** 
+	/**
 	 * The SubBytes box used during the encryption
 	 */
 	private final short sBox[] = { 0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f,
@@ -35,9 +35,11 @@ public class AES extends AbstractCipher {
 
 	/**
 	 * Construct a new instance of the AES cipher.
-	 * 
-	 * @param blockLength the length of each block in this cipher
-	 * @param keyRange the maximum value each key chunk is permitted to take
+	 *
+	 * @param blockLength
+	 *            the length of each block in this cipher
+	 * @param keyRange
+	 *            the maximum value each key chunk is permitted to take
 	 */
 	public AES(int blockLength, int keyRange) {
 		super(blockLength, keyRange);

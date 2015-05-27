@@ -50,14 +50,14 @@ public interface Simulator {
 	 */
 	public double[][] getVectors();
 
+	public void runAdditionalTrace(int nTraces);
+
 	/**
 	 * Begins simulation of the attack and generating the raw trace data and
 	 * distinguishing it.
 	 *
 	 */
 	public void runAttack();
-	
-	public void runAdditionalTrace(int nTraces);
 
 	/**
 	 * Sets the distinguisher used to process this simulated data.

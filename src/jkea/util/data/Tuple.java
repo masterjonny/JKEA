@@ -17,7 +17,7 @@ import java.util.List;
  *
  */
 public abstract class Tuple implements Iterable<Object>, Serializable,
-		Comparable<Tuple> {
+Comparable<Tuple> {
 
 	private static final long serialVersionUID = 5431085632328343101L;
 
@@ -114,7 +114,7 @@ public abstract class Tuple implements Iterable<Object>, Serializable,
 	 * Get the value at a specific position in the tuple. This method has to
 	 * return object, so using it you will lose the type-safety you get with the
 	 * {@code getValueX()} methods.
-	 * 
+	 *
 	 * @param pos
 	 *            the position of the value to be retrieved
 	 * @return the value

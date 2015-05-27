@@ -24,16 +24,16 @@ class NodeEnum extends Enum {
 		init(pDistribtuionSet, pOffset, pWidth);
 	}
 
-	protected void init(ArrayList<PMF> pDistribtuionSet, int pOffset,
-			int pWidth) {
+	protected void init(ArrayList<PMF> pDistribtuionSet, int pOffset, int pWidth) {
 		mWidth = pWidth;
-		for (int i = 0; i < mWidth; ++i)
+		for (int i = 0; i < mWidth; ++i) {
 			mSize *= pDistribtuionSet.get(pOffset + i).size();
+		}
 
 		int n1 = (int) ((mWidth + 1) / 2);
 		int n2 = (int) (mWidth - n1);
 		mEnumerationX = (n1 > 1) ? new NodeEnum(pDistribtuionSet, pOffset, n1)
-				: new LeafEnum(pDistribtuionSet.get(pOffset));
+		: new LeafEnum(pDistribtuionSet.get(pOffset));
 		mEnumerationY = (n2 > 1) ? new NodeEnum(pDistribtuionSet, pOffset + n1,
 				n2) : new LeafEnum(pDistribtuionSet.get(pOffset + n1));
 
@@ -52,19 +52,22 @@ class NodeEnum extends Enum {
 		int n1 = (int) ((mWidth + 1) / 2);
 		int n2 = (int) (mWidth - n1);
 		Iterator<Short> iter = mEnumerationX.label(c.x());
-		for (int i = 0; i < n1; ++i)
+		for (int i = 0; i < n1; ++i) {
 			mBufferLabel.add(iter.next());
+		}
 		iter = mEnumerationY.label(c.y());
-		for (int i = 0; i < n2; i++)
+		for (int i = 0; i < n2; i++) {
 			mBufferLabel.add(iter.next());
+		}
 		++mCount;
 		return c;
 	}
 
 	@Override
 	public boolean next() {
-		if (mBoundary.empty())
+		if (mBoundary.empty()) {
 			return false;
+		}
 
 		Outcome c = memorize();
 		long x = c.x();
@@ -73,19 +76,21 @@ class NodeEnum extends Enum {
 		mY = Math.max(mY, y);
 		mBoundary.pop();
 
-		if (mEnumerationX.reserve(x + 1))
+		if (mEnumerationX.reserve(x + 1)) {
 			mBoundary.push(
 					mEnumerationX.getProbability(x + 1)
-					+ mEnumerationY.getProbability(y), x + 1, y);
-		else
+							+ mEnumerationY.getProbability(y), x + 1, y);
+		} else {
 			mEnumerationY.clear(y);
+		}
 
-		if (mEnumerationY.reserve(y + 1))
+		if (mEnumerationY.reserve(y + 1)) {
 			mBoundary.push(
 					mEnumerationY.getProbability(y + 1)
-					+ mEnumerationX.getProbability(x), x, y + 1);
-		else
+							+ mEnumerationX.getProbability(x), x, y + 1);
+		} else {
 			mEnumerationX.clear(x);
+		}
 
 		return true;
 	}

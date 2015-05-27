@@ -46,8 +46,9 @@ class Enum {
 			mDominance.add(false);
 			next();
 		}
-		if (mDominance.get((int) pIndex) || (pIndex >= mSize))
+		if (mDominance.get((int) pIndex) || (pIndex >= mSize)) {
 			return false;
+		}
 		mDominance.set((int) pIndex, true);
 		return true;
 	}

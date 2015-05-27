@@ -19,8 +19,9 @@ public class BinaryHeap {
 		int hole = 1;
 		int succ = 2;
 		while ((succ + 1) < mQueue.size()) {
-			if (mQueue.get(succ).p() < mQueue.get(succ + 1).p())
+			if (mQueue.get(succ).p() < mQueue.get(succ + 1).p()) {
 				++succ;
+			}
 			mQueue.set(hole, mQueue.get(succ));
 			hole = succ;
 			succ <<= 1;
@@ -43,12 +44,12 @@ public class BinaryHeap {
 		int hole = mQueue.size();
 		mQueue.add(null);
 		int pred = hole >> 1;
-			while (mQueue.get(pred).p() < pP) {
-				mQueue.set(hole, mQueue.get(pred));
-				hole = pred;
-				pred >>= 1;
-			}
-			mQueue.set(hole, new Outcome(pP, pX, pY));
+		while (mQueue.get(pred).p() < pP) {
+			mQueue.set(hole, mQueue.get(pred));
+			hole = pred;
+			pred >>= 1;
+		}
+		mQueue.set(hole, new Outcome(pP, pX, pY));
 	}
 
 	public Outcome top() {

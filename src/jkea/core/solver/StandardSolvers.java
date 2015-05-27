@@ -44,7 +44,7 @@ public class StandardSolvers extends SolverProvider {
 		try {
 			if (name.equalsIgnoreCase("glowacz")) {
 				return newGlowacz(typedProperties, attack);
-			} else if (name.equalsIgnoreCase("kea")) { 
+			} else if (name.equalsIgnoreCase("kea")) {
 				return newKEA(typedProperties, attack);
 			} else {
 				return null;
@@ -72,5 +72,5 @@ public class StandardSolvers extends SolverProvider {
 		double precision = properties.getDouble("precision", 7.5);
 		return new KEA(attack, precision);
 	}
-	
+
 }

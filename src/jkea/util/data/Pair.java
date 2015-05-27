@@ -19,7 +19,7 @@ public final class Pair<A, B> extends Tuple {
 
 	/**
 	 * Create tuple from array. Array has to have exactly two elements.
-	 * 
+	 *
 	 * @param <X>
 	 *            the array component type
 	 * @param array
@@ -41,7 +41,7 @@ public final class Pair<A, B> extends Tuple {
 	/**
 	 * Create tuple from collection. Collection has to have exactly two
 	 * elements.
-	 * 
+	 *
 	 * @param <X>
 	 *            the collection component type
 	 * @param collection
@@ -54,7 +54,7 @@ public final class Pair<A, B> extends Tuple {
 
 	/**
 	 * Create tuple from iterable. Iterable has to have exactly two elements.
-	 * 
+	 *
 	 * @param <X>
 	 *            the iterable component type
 	 * @param iterable
@@ -68,7 +68,7 @@ public final class Pair<A, B> extends Tuple {
 	/**
 	 * Create tuple from iterable, starting from the specified index. Iterable
 	 * can have more (or less) elements than the tuple to be created.
-	 * 
+	 *
 	 * @param <X>
 	 *            the iterable component type
 	 * @param iterable

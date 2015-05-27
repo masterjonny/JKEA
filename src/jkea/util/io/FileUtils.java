@@ -30,7 +30,7 @@ public class FileUtils {
 
 	/**
 	 * Copies all the bytes from one file to another. .
-	 * 
+	 *
 	 * @param source
 	 *            the source file
 	 * @param destination

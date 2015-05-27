@@ -28,8 +28,7 @@ public class AESHammingWeight extends AbstractSimulator {
 		 * @param keyRange
 		 *            the maximum key value for chunks of this AES device
 		 */
-		AESDevice(ArrayList<Template> templates, int blockLength,
-				int keyRange) {
+		AESDevice(ArrayList<Template> templates, int blockLength, int keyRange) {
 			super(templates, new AES(blockLength, keyRange));
 		}
 	}
@@ -82,17 +81,6 @@ public class AESHammingWeight extends AbstractSimulator {
 	}
 
 	@Override
-	public void runAttack() {
-		for (int i = 0; i < numberOfVectors; i++) {
-			for (int j = 0; j < vectorLength; j++) {
-				vectors[i][j] = 1. / vectorLength;
-			}
-		}
-
-		runAdditionalTrace(nTraces);
-	}
-	
-	@Override
 	public void runAdditionalTrace(int nTraces) {
 		final AES c = new AES(numberOfVectors, vectorLength);
 		for (long i = 0; i < nTraces; i++) {
@@ -102,6 +90,17 @@ public class AESHammingWeight extends AbstractSimulator {
 			vectors = distinguisher.updatePrior(vectors, plain, trace, c,
 					leakData);
 		}
+	}
+
+	@Override
+	public void runAttack() {
+		for (int i = 0; i < numberOfVectors; i++) {
+			for (int j = 0; j < vectorLength; j++) {
+				vectors[i][j] = 1. / vectorLength;
+			}
+		}
+
+		runAdditionalTrace(nTraces);
 	}
 
 }
