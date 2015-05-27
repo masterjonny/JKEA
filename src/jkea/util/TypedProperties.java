@@ -32,7 +32,7 @@ public class TypedProperties {
 	 * @return a typed properties instance with the specified key-value pair
 	 */
 	public static TypedProperties withProperty(String key, String value) {
-		final Properties properties = new Properties();
+		Properties properties = new Properties();
 		properties.setProperty(key, value);
 
 		return new TypedProperties(properties);
@@ -113,8 +113,8 @@ public class TypedProperties {
 	 *         by {@code TypedProperties}
 	 */
 	private String arrayToString(Object array) {
-		final StringBuilder sb = new StringBuilder();
-		final Class<?> type = array.getClass();
+		StringBuilder sb = new StringBuilder();
+		Class<?> type = array.getClass();
 
 		if (!type.isArray()) {
 			throw new IllegalArgumentException("not an array");
@@ -165,7 +165,7 @@ public class TypedProperties {
 	 *         specified name exists
 	 */
 	public boolean getBoolean(String key, boolean defaultValue) {
-		final String value = getString(key, null);
+		String value = getString(key, null);
 
 		if (value == null) {
 			return defaultValue;
@@ -190,7 +190,7 @@ public class TypedProperties {
 	 *             if the property value is not a parseable {@code byte}
 	 */
 	public byte getByte(String key, byte defaultValue) {
-		final String value = getString(key, null);
+		String value = getString(key, null);
 
 		if (value == null) {
 			return defaultValue;
@@ -213,12 +213,12 @@ public class TypedProperties {
 	 *         the specified name exists
 	 */
 	public byte[] getByteArray(String key, byte[] defaultValues) {
-		final String[] values = getStringArray(key, null);
+		String[] values = getStringArray(key, null);
 
 		if (values == null) {
 			return defaultValues;
 		} else {
-			final byte[] result = new byte[values.length];
+			byte[] result = new byte[values.length];
 
 			for (int i = 0; i < values.length; i++) {
 				result[i] = Byte.parseByte(values[i]);
@@ -244,7 +244,7 @@ public class TypedProperties {
 	 *             if the property value is not a parseable {@code double}
 	 */
 	public double getDouble(String key, double defaultValue) {
-		final String value = getString(key, null);
+		String value = getString(key, null);
 
 		if (value == null) {
 			return defaultValue;
@@ -267,12 +267,12 @@ public class TypedProperties {
 	 *         with the specified name exists
 	 */
 	public double[] getDoubleArray(String key, double[] defaultValues) {
-		final String[] values = getStringArray(key, null);
+		String[] values = getStringArray(key, null);
 
 		if (values == null) {
 			return defaultValues;
 		} else {
-			final double[] result = new double[values.length];
+			double[] result = new double[values.length];
 
 			for (int i = 0; i < values.length; i++) {
 				result[i] = Double.parseDouble(values[i]);
@@ -298,7 +298,7 @@ public class TypedProperties {
 	 *             if the property value is not a parseable {@code float}
 	 */
 	public float getFloat(String key, float defaultValue) {
-		final String value = getString(key, null);
+		String value = getString(key, null);
 
 		if (value == null) {
 			return defaultValue;
@@ -321,12 +321,12 @@ public class TypedProperties {
 	 *         the specified name exists
 	 */
 	public float[] getFloatArray(String key, float[] defaultValues) {
-		final String[] values = getStringArray(key, null);
+		String[] values = getStringArray(key, null);
 
 		if (values == null) {
 			return defaultValues;
 		} else {
-			final float[] result = new float[values.length];
+			float[] result = new float[values.length];
 
 			for (int i = 0; i < values.length; i++) {
 				result[i] = Float.parseFloat(values[i]);
@@ -352,7 +352,7 @@ public class TypedProperties {
 	 *             if the property value is not a parseable integer
 	 */
 	public int getInt(String key, int defaultValue) {
-		final String value = getString(key, null);
+		String value = getString(key, null);
 
 		if (value == null) {
 			return defaultValue;
@@ -375,12 +375,12 @@ public class TypedProperties {
 	 *         the specified name exists
 	 */
 	public int[] getIntArray(String key, int[] defaultValues) {
-		final String[] values = getStringArray(key, null);
+		String[] values = getStringArray(key, null);
 
 		if (values == null) {
 			return defaultValues;
 		} else {
-			final int[] result = new int[values.length];
+			int[] result = new int[values.length];
 
 			for (int i = 0; i < values.length; i++) {
 				result[i] = Integer.parseInt(values[i]);
@@ -406,7 +406,7 @@ public class TypedProperties {
 	 *             if the property value is not a parseable {@code long}
 	 */
 	public long getLong(String key, long defaultValue) {
-		final String value = getString(key, null);
+		String value = getString(key, null);
 
 		if (value == null) {
 			return defaultValue;
@@ -429,12 +429,12 @@ public class TypedProperties {
 	 *         the specified name exists
 	 */
 	public long[] getLongArray(String key, long[] defaultValues) {
-		final String[] values = getStringArray(key, null);
+		String[] values = getStringArray(key, null);
 
 		if (values == null) {
 			return defaultValues;
 		} else {
-			final long[] result = new long[values.length];
+			long[] result = new long[values.length];
 
 			for (int i = 0; i < values.length; i++) {
 				result[i] = Long.parseLong(values[i]);
@@ -471,7 +471,7 @@ public class TypedProperties {
 	 *             if the property value is not a parseable {@code short}
 	 */
 	public short getShort(String key, short defaultValue) {
-		final String value = getString(key, null);
+		String value = getString(key, null);
 
 		if (value == null) {
 			return defaultValue;
@@ -494,12 +494,12 @@ public class TypedProperties {
 	 *         the specified name exists
 	 */
 	public short[] getShortArray(String key, short[] defaultValues) {
-		final String[] values = getStringArray(key, null);
+		String[] values = getStringArray(key, null);
 
 		if (values == null) {
 			return defaultValues;
 		} else {
-			final short[] result = new short[values.length];
+			short[] result = new short[values.length];
 
 			for (int i = 0; i < values.length; i++) {
 				result[i] = Short.parseShort(values[i]);
@@ -522,7 +522,7 @@ public class TypedProperties {
 	 *         exists
 	 */
 	public String getString(String key, String defaultValue) {
-		final String value = properties.getProperty(key);
+		String value = properties.getProperty(key);
 
 		if (value == null) {
 			return defaultValue;
@@ -545,14 +545,14 @@ public class TypedProperties {
 	 *         with the specified name exists
 	 */
 	public String[] getStringArray(String key, String[] defaultValues) {
-		final String value = getString(key, null);
+		String value = getString(key, null);
 
 		if (value == null) {
 			return defaultValues;
 		} else if (value.isEmpty()) {
 			return new String[0];
 		} else {
-			final String[] tokens = value.split(separator, -1);
+			String[] tokens = value.split(separator, -1);
 
 			for (int i = 0; i < tokens.length; i++) {
 				tokens[i] = tokens[i].trim();

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import jkea.core.Distinguisher;
 import jkea.core.Simulator;
-import jkea.util.data.Template;
+import jkea.util.data.template.Template;
 
 /**
  * Abstract class for managing the simulation and generation of distinguishing
@@ -27,12 +27,12 @@ public abstract class AbstractSimulator implements Simulator {
 	/**
 	 * The number of distinguishing vectors this simulator contains.
 	 */
-	protected final int numberOfVectors;
+	protected int numberOfVectors;
 
 	/**
 	 * The length of each distinguishing vector in this simulator.
 	 */
-	protected final int vectorLength;
+	protected int vectorLength;
 
 	/**
 	 * The set of distinguishing vectors in this simulator.

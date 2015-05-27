@@ -3,7 +3,7 @@ package jkea.core;
 import java.util.ArrayList;
 
 import jkea.util.cipher.Cipher;
-import jkea.util.data.Template;
+import jkea.util.data.template.Template;
 
 /**
  * Interface for implementing different distinguishers. Distinguishers are used
@@ -32,7 +32,7 @@ public interface Distinguisher {
 	 * @return an updated set of distinguishing vectors
 	 *
 	 */
-	double[][] updatePrior(double[][] prior, final short[] plain,
-			final double[] trace, Cipher cipher, ArrayList<Template> templates);
+	double[][] updatePrior(double[][] prior, short[] plain,
+			double[] trace, Cipher cipher, ArrayList<Template> templates);
 
 }

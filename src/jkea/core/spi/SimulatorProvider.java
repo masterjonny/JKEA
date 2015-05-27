@@ -33,13 +33,12 @@ public abstract class SimulatorProvider {
 	 * The number of traces to simulate.
 	 */
 	protected int nTraces;
-	
+
 	/**
 	 * The amount of noise present in the simulated traces.
 	 */
 	protected double variance;
 
-	
 	/**
 	 * Constructs an simulator provider.
 	 */

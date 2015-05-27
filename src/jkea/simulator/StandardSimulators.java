@@ -36,7 +36,7 @@ public class StandardSimulators extends SimulatorProvider {
 
 	@Override
 	public Simulator getSimulator(String name, Properties properties) {
-		final TypedProperties typedProperties = new TypedProperties(properties);
+		TypedProperties typedProperties = new TypedProperties(properties);
 
 		nTraces = typedProperties.getInt("traces", 30);
 		variance = typedProperties.getDouble("variance", 2.0);
@@ -47,7 +47,7 @@ public class StandardSimulators extends SimulatorProvider {
 			} else {
 				return null;
 			}
-		} catch (final JKEAException e) {
+		} catch (JKEAException e) {
 			throw new ProviderNotFoundException(name, e);
 		}
 	}

@@ -5,12 +5,14 @@
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. --><project basedir="." default="build" name="JKEA">
     <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../../usr/share/eclipse/"/>
+    <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.7"/>
     <property name="source" value="1.7"/>
     <path id="JUnit 4.libraryclasspath">
-        <pathelement location="C:/Users/Jonathan/eclipse/plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
-        <pathelement location="C:/Users/Jonathan/eclipse/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
     </path>
     <path id="JKEA.classpath">
         <pathelement location="bin"/>
@@ -32,6 +34,12 @@
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="runtimes">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
     </target>
     <target name="clean">
         <delete dir="bin"/>
@@ -44,6 +52,7 @@
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
             <src path="test"/>
+            <src path="runtimes"/>
             <classpath refid="JKEA.classpath"/>
         </javac>
     </target>
@@ -61,9 +70,172 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="ExampleRuntime">
-        <java classname="jkea.ExampleRuntime" failonerror="true" fork="yes">
+    <target name="ComparativeRuntime">
+        <java classname="jkea.runtime.ComparativeRuntime" failonerror="true" fork="yes">
             <classpath refid="JKEA.classpath"/>
         </java>
+    </target>
+    <target name="AESCipherTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.testing.simulation.AESCipherTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="test">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.core.PRNGTest" todir="${junit.output.dir}"/>
+            <test name="jkea.util.TimingTest" todir="${junit.output.dir}"/>
+            <test name="jkea.util.TypedPropertiesTest" todir="${junit.output.dir}"/>
+            <test name="jkea.util.data.TupleTest" todir="${junit.output.dir}"/>
+            <test name="jkea.util.io.CommentedLineReaderTest" todir="${junit.output.dir}"/>
+            <test name="jkea.util.io.FileUtilsTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="TemplateAttackTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.simulation.TemplateAttackTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="jkea.testing.simulation">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="Runtime">
+        <java classname="jkea.runtime.Runtime" failonerror="true" fork="yes">
+            <classpath refid="JKEA.classpath"/>
+        </java>
+    </target>
+    <target name="jkea.simulation">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="KnapsackTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.solvers.bristol.data.KnapsackTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="GlowaczTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.solvers.glowacz.GlowaczTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="TypedPropertiesTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.util.TypedPropertiesTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="TupleTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.util.data.TupleTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="KEARuntimeParallel (1)">
+        <java classname="jkea.runtime.multicore.KEARuntimeParallel" failonerror="true" fork="yes">
+            <arg line="2"/>
+            <classpath refid="JKEA.classpath"/>
+        </java>
+    </target>
+    <target name="FSERuntime">
+        <java classname="jkea.runtime.FSERuntime" failonerror="true" fork="yes">
+            <classpath refid="JKEA.classpath"/>
+        </java>
+    </target>
+    <target name="ContainerTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.solvers.bristol.data.ContainerTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="AESDeviceTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.simulation.AESDeviceTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="SimulateAttackToFile">
+        <java classname="jkea.simulation.SimulateAttackToFile" failonerror="true" fork="yes">
+            <arg line="2  15"/>
+            <classpath refid="JKEA.classpath"/>
+        </java>
+    </target>
+    <target name="FFTTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.util.FFTTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="HammingTemplateTest.vairanceUpper">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.testing.simulation.HammingTemplateTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="HammingTemplateTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.testing.simulation.HammingTemplateTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="VeyratRuntime">
+        <java classname="jkea.runtime.VeyratRuntime" failonerror="true" fork="yes">
+            <classpath refid="JKEA.classpath"/>
+        </java>
+    </target>
+    <target name="ComplexTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="jkea.util.data.ComplexTest" todir="${junit.output.dir}"/>
+            <classpath refid="JKEA.classpath"/>
+        </junit>
+    </target>
+    <target name="ExampleRuntime">
+        <java classname="runtimes.ExampleRuntime" failonerror="true" fork="yes">
+            <classpath refid="JKEA.classpath"/>
+        </java>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
     </target>
 </project>

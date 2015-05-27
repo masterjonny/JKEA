@@ -39,15 +39,17 @@ public class StandardSolvers extends SolverProvider {
 
 	@Override
 	public Solver getSolver(String name, Properties properties, Simulator attack) {
-		final TypedProperties typedProperties = new TypedProperties(properties);
+		TypedProperties typedProperties = new TypedProperties(properties);
 
 		try {
 			if (name.equalsIgnoreCase("glowacz")) {
 				return newGlowacz(typedProperties, attack);
+			} else if (name.equalsIgnoreCase("kea")) { 
+				return newKEA(typedProperties, attack);
 			} else {
 				return null;
 			}
-		} catch (final JKEAException e) {
+		} catch (JKEAException e) {
 			throw new ProviderNotFoundException(name, e);
 		}
 	}
@@ -66,4 +68,9 @@ public class StandardSolvers extends SolverProvider {
 		return new Glowacz(attack, nBins);
 	}
 
+	private Solver newKEA(TypedProperties properties, Simulator attack) {
+		double precision = properties.getDouble("precision", 7.5);
+		return new KEA(attack, precision);
+	}
+	
 }

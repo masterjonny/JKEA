@@ -26,13 +26,13 @@ public class Glowacz extends AbstractSolver {
 		/**
 		 * The size (range) of each bin within this histogram.
 		 */
-		private final double binSize;
+		private double binSize;
 
 		/**
 		 * Array containing the count of the number of elements stored in each
 		 * bin.
 		 */
-		private final int[] data;
+		private int[] data;
 
 		/**
 		 * Constructs a new histogram.
@@ -110,17 +110,17 @@ public class Glowacz extends AbstractSolver {
 	/**
 	 * The set of histograms this algorithm is processing.
 	 */
-	private final ArrayList<Histogram> hists;
+	private ArrayList<Histogram> hists;
 
 	/**
 	 * Indices of the bins which contain the correct key chunks.
 	 */
-	private final int[] keyLocations;
+	private int[] keyLocations;
 
 	/**
 	 * The number of bins which each histogram contains.
 	 */
-	private final int nBins;
+	private int nBins;
 
 	/**
 	 * Constructs a new instance of this solver.
@@ -140,7 +140,7 @@ public class Glowacz extends AbstractSolver {
 
 	/**
 	 * Perform a convolution of two histograms.
-	 * 
+	 *
 	 * @param sig
 	 *            the histogram being used as the signal in the convolution
 	 * @param kern
@@ -148,20 +148,20 @@ public class Glowacz extends AbstractSolver {
 	 * @return the new histogram which is a convolotion of the two inputs
 	 */
 	protected Histogram convolve(Histogram sig, Histogram kern) {
-		final Histogram res = new Histogram(
+		Histogram res = new Histogram(
 				(sig.getNBins() + kern.getNBins()) - 1, sig.getBinSize());
 
 		for (int n = 0; n < res.getNBins(); n++) {
-			final int kMin = (n >= (kern.getNBins() - 1)) ? n
+			int kMin = (n >= (kern.getNBins() - 1)) ? n
 					- (kern.getNBins() - 1) : 0;
-					final int kMax = (n < (sig.getNBins() - 1)) ? n
-							: sig.getNBins() - 1;
+			int kMax = (n < (sig.getNBins() - 1)) ? n
+					: sig.getNBins() - 1;
 
-					res.set(0, n);
+			res.set(0, n);
 
-					for (int k = kMin; k <= kMax; k++) {
-						res.set(res.getBin(n) + (sig.getBin(k) * kern.getBin(n - k)), n);
-					}
+			for (int k = kMin; k <= kMax; k++) {
+				res.set(res.getBin(n) + (sig.getBin(k) * kern.getBin(n - k)), n);
+			}
 
 		}
 		return res;
@@ -177,14 +177,14 @@ public class Glowacz extends AbstractSolver {
 	protected void initialise() {
 		super.initialise();
 		double min = Double.MAX_VALUE;
-		for (final double[] score : scores) {
+		for (double[] score : scores) {
 			for (int j = 0; j < scores[0].length; j++) {
 				min = Math.min(min, score[j]);
 			}
 		}
 
 		for (int i = 0; i < scores.length; i++) {
-			final Histogram h = new Histogram(nBins, min / nBins);
+			Histogram h = new Histogram(nBins, min / nBins);
 			for (int j = 0; j < scores[0].length; j++) {
 				if (j == key[i]) {
 					keyLocations[i] = ((scores[i][j] == (min / nBins)) ? h

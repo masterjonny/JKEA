@@ -1,10 +1,13 @@
 package jkea.util.cipher;
 
-import java.util.Random;
+/**
+ * An implementation of the Advanced Encryption Standard (AES).
+ */
+public class AES extends AbstractCipher {
 
-public class AES implements Cipher {
-
-	private final Random numberStream;
+	/** 
+	 * The SubBytes box used during the encryption
+	 */
 	private final short sBox[] = { 0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f,
 			0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76, 0xca, 0x82,
 			0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c,
@@ -30,28 +33,27 @@ public class AES implements Cipher {
 			0x28, 0xdf, 0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41,
 			0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16 };
 
-	public AES() {
-		numberStream = new Random();
+	/**
+	 * Construct a new instance of the AES cipher.
+	 * 
+	 * @param blockLength the length of each block in this cipher
+	 * @param keyRange the maximum value each key chunk is permitted to take
+	 */
+	public AES(int blockLength, int keyRange) {
+		super(blockLength, keyRange);
 	}
 
 	@Override
-	public final short[] newBlock() {
-		final short block[] = new short[0x10];
-		for (int i = 0; i < 0x10; i++)
-			block[i] = (short) numberStream.nextInt(256);
-		return block;
-	}
-
-	@Override
-	public final short predict(short plain, short key) {
+	public short encrypt(short plain, short key) {
 		return sBox[plain ^ key];
 	}
 
 	@Override
-	public final short[] predict(final short[] plain, final short[] key) {
-		final short prediction[] = new short[0x10];
-		for (int i = 0; i < 0x10; i++)
-			prediction[i] = predict(plain[i], key[i]);
+	public short[] encrypt(short[] plain, short[] key) {
+		short prediction[] = new short[blockLength];
+		for (int i = 0; i < blockLength; i++) {
+			prediction[i] = encrypt(plain[i], key[i]);
+		}
 		return prediction;
 	}
 
